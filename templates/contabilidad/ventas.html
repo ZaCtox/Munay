@@ -1,0 +1,263 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración Munay</title>
+    <link rel="stylesheet" href="{% static 'css/admin_contabilidad.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/Munay_logo.png' %}">
+</head>
+<body>
+    <div class="header-container">
+        <h1>Administración de Ventas - Munay</h1>
+        <a href="{% url 'admin_contabilidad' %}" class="volver-link">
+            <img src="{% static "img/icon-decorativos/volver.png" %}" alt="Volver" class="volver-icon">
+        </a>
+    </div>
+    <br><br>
+
+    <!-- mensaje cuando se agrega una venta correctamente -->
+    {% if messages %}
+    <div class="message-container success-message" id="successMessage">
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                <div class="message-success texto-negro">{{ message }}</div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="container formulario">
+        <h2 class="titulo-agregar-venta"><span>¿Quiere agregar una nueva venta?</span></h2>
+    
+        <form method="post" action="{% url 'ventas' %}" enctype="multipart/form-data" onsubmit="return validarFormulario() && actualizarMontoTotal();">
+            {% csrf_token %}
+            <div class="group">
+                <label for="clienteR" class="label">Cliente: </label>
+                <select id="clienteR" name="clienteR" class="input">
+                    {% for cliente in clientes %}
+                        <option value="{{ cliente.id }}">{{ cliente.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+    
+            <div class="group">
+                <label for="forma_de_pagoR" class="label">Forma de Pago: </label>
+                <select id="forma_de_pagoR" name="forma_de_pagoR" class="input">
+                    <option value="Efectivo">Efectivo</option>
+                    <option value="Transferencia Bancaria">Transferencia Bancaria</option>
+                    <option value="Tarjeta Crédito/Débito">Tarjeta Crédito/Débito</option>
+                </select>
+            </div>
+            <div class="group">
+                <label for="montoR" class="label">Monto Total: </label>
+                <input id="montoR" type="number" name="montoR" class="input" readonly>
+            </div>  
+            <h3>Seleccione los productos</h3>    
+            <div class="group">
+                <ul class="productos-lista">
+                    <!-- Mostrar snacks -->
+                    {% for snack in snacks %}
+                    <li class="producto">
+                        <input type="checkbox" id="producto_snack_{{ snack.id }}" name="productos[]" value="snack_{{ snack.id }}" data-tipo="snack" data-precio="{{ snack.precio }}" onchange="toggleCantidad(this)">
+                        <label for="producto_snack_{{ snack.id }}">{{ snack.nombre }} - Precio: ${{ snack.precio }}</label>
+                        <input type="hidden" name="tipo_producto_snack_{{ snack.id }}" value="snack"> <!-- Agregar el tipo de producto oculto -->
+                        <h4>Cantidad:</h4>
+                        <input type="number" id="cantidad_snack_{{ snack.id }}" name="cantidades[]" value="1" min="0" disabled>
+                    </li>
+                    {% endfor %}
+                    <!-- Mostrar tortas -->
+                    {% for torta in tortas %}
+                    <li class="producto">
+                        <input type="checkbox" id="producto_torta_{{ torta.id }}" name="productos[]" value="torta_{{ torta.id }}" data-tipo="torta" data-precio="{{ torta.precio }}" data-precio-15p="{{ torta.precio_15p }}" data-precio-24p="{{ torta.precio_24p }}" onchange="toggleCantidad(this)">
+                        <label for="producto_torta_{{ torta.id }}">{{ torta.nombre }} - Precio: ${{ torta.precio }}</label>
+                        <input type="hidden" name="tipo_producto_torta_{{ torta.id }}" value="torta"> <!-- Agregar el tipo de producto oculto -->
+                        <h4>Tamaño:</h4>
+                        <select id="tamanio_torta_{{ torta.id }}" name="tamanios">
+                            <option value="7">7 personas</option>
+                            <option value="15">15 personas</option>
+                            <option value="24">24 personas</option>
+                        </select>
+                        <input type="hidden" id="cantidad_torta_{{ torta.id }}" name="cantidades[]" value="1" min="0" disabled>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>                        
+            <div class="group">
+                <button type="submit" class="form-submit">Agregar Venta</button>
+            </div>
+        </form>
+    </div>
+    <div class="container">
+        <h2>Detalles de la Venta</h2>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Forma de Pago</th>
+                    <th>Monto</th>
+                    <th>Detalles de Venta</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for venta in ventas %}
+                <tr>
+                    <td>{{ venta.cliente.nombre }}</td>
+                    <td>{{ venta.forma_de_pago }}</td>
+                    <td>${{ venta.monto_total }}</td>
+                    <td>
+                        <button id="btn_mostrar_ocultar_{{ venta.id }}" class="btn-MostrarOcultar" onclick="toggleDetalles('{{ venta.id }}')">Mostrar</button>
+                        <div id="detalles_venta_{{ venta.id }}" style="display: none;">
+                            <ul>
+                                {% for detalle in venta.detalleventa_set.all %}
+                                    <li>
+                                        {% if detalle.content_type_id == 12 %} <!-- Torta es id 12-->
+                                            {{ detalle.producto.nombre }} - Tamaño: {{ detalle.tamaño }}
+                                        {% else %}
+                                            {{ detalle.producto.nombre }} - Cantidad: {{ detalle.cantidad }}
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>                            
+                        </div>       
+                    </td>
+                    <td>{{ venta.fecha|date:"Y-m-d H:i" }}</td> <!-- Formatear la fecha -->
+                    <td>
+                        <!-- Agrega un formulario con un botón para enviar la solicitud de eliminación -->
+                        <form action="{% url 'eliminar_venta' venta.id %}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta venta?')">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-eliminar">Eliminar</button>
+                            <input type="hidden" name="venta_id" value="{{ venta.id }}">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>  
+    <script>
+        // Función para actualizar el monto total cuando cambia la cantidad de un producto
+        function actualizarMontoTotal() {
+            var total = 0;
+            var checkboxes = document.querySelectorAll('input[type="checkbox"][name="productos[]"]');
+            
+            checkboxes.forEach(function(checkbox) {
+                if (checkbox.checked) {
+                    var productoId = checkbox.value.split('_')[1]; // Obtener solo el ID real del producto
+                    var precio = parseFloat(checkbox.dataset.precio);
+                    var tipoProducto = checkbox.dataset.tipo;
+    
+                    var cantidadInput = document.getElementById('cantidad_' + tipoProducto + '_' + productoId);
+                    
+                    if (cantidadInput) {
+                        var cantidad = parseInt(cantidadInput.value);
+                        total += precio * cantidad;
+                    } else {
+                        console.error("Elemento de cantidad no encontrado para el producto con ID: " + productoId);
+                    }
+                }
+            });
+            
+            document.getElementById('montoR').value = total;
+        }
+        
+        // Función para validar el formulario antes de enviarlo
+        function validarFormulario() {
+            var cliente = document.getElementById('clienteR').value;
+            var formaDePago = document.getElementById('forma_de_pagoR').value;
+    
+            var checkboxes = document.querySelectorAll('input[type="checkbox"][name="productos[]"]');
+            var alMenosUnoSeleccionado = Array.from(checkboxes).some(function(checkbox) {
+                return checkbox.checked;
+            });
+    
+            if (!alMenosUnoSeleccionado) {
+                alert("Seleccione al menos un producto.");
+                return false;
+            }
+    
+            var cantidadesValidas = true;
+            checkboxes.forEach(function(checkbox) {
+                if (checkbox.checked) {
+                    var cantidadInput = document.getElementById('cantidad_' + checkbox.dataset.tipo + '_' + checkbox.value.split('_')[1]);
+                    var cantidad = parseInt(cantidadInput.value);
+    
+                    if (isNaN(cantidad) || cantidad <= 0) {
+                        alert("Ingrese una cantidad válida para cada producto seleccionado.");
+                        cantidadesValidas = false;
+                    }
+                }
+            });
+    
+            return cantidadesValidas;
+        }
+    
+        // Función para mostrar u ocultar los detalles de la venta
+        function toggleDetalles(ventaId) {
+            var detallesVenta = document.getElementById('detalles_venta_' + ventaId);
+            var botonMostrarOcultar = document.getElementById('btn_mostrar_ocultar_' + ventaId);
+
+            if (detallesVenta.style.display === 'block') {
+                detallesVenta.style.display = 'none';
+                botonMostrarOcultar.innerText = 'Mostrar';
+            } else {
+                detallesVenta.style.display = 'block';
+                botonMostrarOcultar.innerText = 'Ocultar';
+            }
+        }
+    
+        // Captura los eventos de cambio en la selección de productos
+        var checkboxes = document.querySelectorAll('input[type="checkbox"][name="productos[]"]');
+        checkboxes.forEach(function(checkbox) {
+            checkbox.addEventListener("change", function() {
+                actualizarMontoTotal();
+            });
+        });
+        
+        // Función para habilitar/deshabilitar la entrada de cantidad según el estado del checkbox
+        function toggleCantidad(checkbox) {
+            var productoId = checkbox.value.split('_')[1];
+            var tipoProducto = checkbox.dataset.tipo;
+            var cantidadInput = document.getElementById('cantidad_' + tipoProducto + '_' + productoId);
+            
+            if (cantidadInput) {
+                cantidadInput.disabled = !checkbox.checked;
+                if (!checkbox.checked) {
+                    cantidadInput.value = '';
+                } else {
+                    actualizarMontoTotal();
+                }
+            } else {
+                console.error("Elemento de cantidad no encontrado para el producto con ID: " + productoId);
+            }
+        }
+    
+        document.addEventListener("DOMContentLoaded", function() {
+            var messageContainer = document.querySelector('.message-container');
+    
+            if (messageContainer) {
+                messageContainer.style.opacity = '1';
+    
+                var fadeOutInterval = setInterval(function() {
+                    messageContainer.style.opacity -= 0.1;
+                    if (messageContainer.style.opacity <= 0) {
+                        clearInterval(fadeOutInterval);
+                        messageContainer.style.display = 'none';
+                    }
+                }, 100);
+    
+                var animationDuration = 2000;
+                setTimeout(function() {
+                    clearInterval(fadeOutInterval);
+                    messageContainer.style.display = 'none';
+                }, animationDuration);
+            }
+        });
+    </script>
+    
+    
+</body>
+</html>

@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración Munay</title>
+    <link rel="stylesheet" href="{% static 'css/admin_contabilidad.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/Munay_logo.png' %}">
+</head>
+<body>
+
+<div class="header-container">
+    <h1>Administración de Gastos - Munay</h1>
+    <a href="{% url 'admin_contabilidad' %}" class="volver-link">
+        <img src="{% static "img/icon-decorativos/volver.png" %}" alt="Volver" class="volver-icon">
+    </a>
+</div><br><br>
+
+<!-- mensaje cuando se agrega un producto correctamente -->
+{% if messages %}
+<div class="message-container">
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<div class="container formulario">
+    <h2 class="titulo-agregar-producto"><span>¿Quiere agregar un nuevo gasto?</span></h2>
+
+    <form method="post" action="{% url 'gastos' %}" enctype="multipart/form-data" onsubmit="return validarFormulario();">
+        {% csrf_token %}
+        <div class="group">
+            <label for="proveedorR" class="label">Proveedor: </label>
+            <select id="proveedorR" name="proveedorR" class="input">
+                {% for proveedor in proveedores %}
+                    <option value="{{ proveedor.id }}">{{ proveedor.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>    
+
+        <div class="group">
+            <label for="descripcionR" class="label">Descripción: </label>
+            <input id="descripcionR" type="text" name="descripcionR" class="input">
+        </div>
+
+        <div class="group">
+            <label for="tipoR" class="label">Tipo: </label>
+            <select id="tipoR" name="tipoR" class="input">
+                <option value="Gasto">Gasto</option>
+                <option value="Productos comprados y/o elaborados para la venta">Productos comprados y/o elaborados para la venta</option>
+            </select>
+        </div>
+
+        <div class="group">
+            <label for="forma_de_pagoR" class="label">Forma de Pago: </label>
+            <select id="forma_de_pagoR" name="forma_de_pagoR" class="input">
+                <option value="Efectivo">Efectivo</option>
+                <option value="Transferencia Bancaria">Transferencia Bancaria</option>
+                <option value="Tarjeta Crédito/Débito">Tarjeta Crédito/Débito</option>
+            </select>
+        </div>
+
+        <div class="group">
+            <label for="montoR" class="label">Monto: </label>
+            <input id="montoR" type="number" name="montoR" class="input">
+        </div>
+
+        <div class="group">
+            <button type="submit" class="form-submit">Agregar Gasto</button>
+        </div>
+    </form>
+
+    <div class="gastos-summary">
+        <!-- Resumen de gastos por granularidad -->
+        <h2>Resumen de Gastos</h2>
+        <form method="get">
+            <!-- Selección de granularidad -->
+            <select name="filtro">
+                <option value="diario">Diario</option>
+                <option value="semanal">Semanal</option>
+                <option value="mensual">Mensual</option>
+            </select>
+            <!-- Botón para mostrar -->
+            <button type="submit">Mostrar</button>
+        </form>
+        <!-- Resultados de gastos por granularidad -->
+        {% for gasto in gastos %}
+            <!-- Cada elemento del resumen -->
+        {% endfor %}
+    </div>
+</div>
+{% if DEBUG %}
+    <pre>{{ gastos }}</pre>
+{% endif %}
+
+<!-- Tabla para mostrar todos los gastos -->
+<div class="container">
+    <h2>Lista de Gastos</h2>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Proveedor</th>
+                <th>Rut</th>
+                <th>Descripción</th>
+                <th>Tipo</th>
+                <th>Forma de Pago</th>
+                <th>Monto</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for gasto in gastos %}
+                <tr>
+                    <td>{{ gasto.proveedor.nombre }}</td>
+                    <td>{{ gasto.proveedor.rut }}</td>
+                    <td>{{ gasto.descripcion }}</td>
+                    <td>{{ gasto.tipo }}</td>
+                    <td>{{ gasto.forma_de_pago }}</td>
+                    <td>{{ gasto.monto }}</td>
+                    <td>{{ gasto.fecha|date:"Y-m-d H:i" }}</td> <!-- Formatear la fecha -->
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Función para validar el formulario antes de enviarlo
+    function validarFormulario() {
+        var proveedor = document.getElementById('proveedorR').value;
+        var descripcion = document.getElementById('descripcionR').value;
+        var tipo = document.getElementById('tipoR').value;
+        var formaDePago = document.getElementById('forma_de_pagoR').value;
+        var monto = document.getElementById('montoR').value;
+
+        // Verificar si algún campo está vacío
+        if (!proveedor || !descripcion || !tipo || !formaDePago || !monto) {
+            alert("Todos los campos son obligatorios.");
+            return false; // Detener el envío del formulario
+        }
+        return true; // Permitir el envío del formulario si todos los campos están llenos
+    }
+</script>
+</body>
+</html>

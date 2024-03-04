@@ -1,0 +1,359 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración Munay</title>
+    <link rel="stylesheet" href="{% static 'css/admin_producto.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/Munay_logo.png' %}">
+</head>
+<body>
+    <div class="header-container">
+        <h1>Administración de Productos - Munay</h1>
+        <a href="{% url 'administracion' %}" class="volver-link">
+            <img src="{% static "img/icon-decorativos/volver.png" %}" alt="Volver" class="volver-icon">
+        </a>
+    </div>
+
+
+    <!-- Formulario para editar snack -->
+    <div class="formulario-container">
+        <h2 id="titulo-editar-producto" style="display: none;"><span>Editando Snack</span></h2>
+        {% for snack in snacks %}
+        <form id="form-editar-{{ snack.id }}" method="post" action="{% url 'editar_snack' snack.id %}" class="formulario-editar" style="display: none;">
+            {% csrf_token %}
+            <input type="hidden" name="producto_id" value="{{ snack.id }}">
+            <div class="form-group">
+                <label for="nombre" class="label">Nombre:</label>
+                <input type="text"class="input" id="nombre" name="nombre" value="{{ snack.nombre }}"><br><br>
+                
+                <label for="descripcion" class="label">Descripción:</label>
+                <input type="text" class="input" id="descripcion" name="descripcion" value="{{ snack.descripcion }}"><br><br>
+
+                <label for="precio" class="label">Precio:</label>
+                <input type="number" class="input" id="precio" name="precio" value="{{ snack.precio }}"><br><br>
+
+                <label for="descuento_2da_unidad" class="label">Descuento en Segunda Unidad:</label>
+                <input type="number" class="input" id="descuento_2da_unidad" name="descuento_2da_unidad" value="{{ snack.descuento_2da_unidad }}"><br><br>
+                
+                <label for="stock" class="label">Stock:</label>
+                <input type="number" class="input" id="stock" name="stock" value="{{ snack.stock }}"><br><br>
+                
+                <button type="submit" class="form-submit-editar" onclick="guardarEdicion('form-editar-{{ snack.id }}')">
+                    <span>Guadar Edición</span>
+                </button>
+            </div>
+            
+        </form>
+        {% endfor %} 
+    </div>
+
+    <!-- Formulario editar Tortas -->
+    <div class="formulario-container">
+        <h2 id="titulo-editar-torta" style="display: none;"><span>Editando Torta</span></h2>
+        {% for torta in tortas %}
+        <form id="form-editar-torta-{{ torta.id }}" method="post" action="{% url 'editar_torta' torta.id %}" class="formulario-editar" style="display: none;">
+            {% csrf_token %}
+            <input type="hidden" name="producto_id" value="{{ torta.id }}">
+            <div class="form-group">
+                <label for="nombre" class="label">Nombre:</label>
+                <input type="text"class="input" id="nombre" name="nombre" value="{{ torta.nombre }}"><br><br>
+                
+                <label for="descripcion" class="label">Descripción:</label>
+                <input type="text" class="input" id="descripcion" name="descripcion" value="{{ torta.descripcion }}"><br><br>
+    
+                <label for="precio" class="label">Precio:</label>
+                <input type="number" class="input" id="precio" name="precio" value="{{ torta.precio }}"><br><br>
+    
+                <label for="precio_15p" class="label">Precio 15p:</label>
+                <input type="number" class="input" id="precio_15p" name="precio_15p" value="{{ torta.precio_15p }}"><br><br>
+    
+                <label for="precio_24p" class="label">Precio 24p:</label>
+                <input type="number" class="input" id="precio_24p" name="precio_24p" value="{{ torta.precio_24p }}"><br><br>
+                
+                <label for="stock" class="label">Stock:</label>
+                <input type="number" class="input" id="stock" name="stock" value="{{ torta.stock }}"><br><br>
+                
+                <button type="submit" class="form-submit-editar" onclick="guardarEdicion('form-editar-torta-{{ torta.id }}')">
+                    <span>Guardar Edición</span>
+                </button>
+            </div>
+        </form>
+        {% endfor %} 
+    </div>
+
+
+
+
+    <!-- formularios para agregar productos -->
+    {% comment %} Formulario agrega snack {% endcomment %}
+    <div class="formulario-container">
+        <div class="formulario-wrapper">
+            <h2 class="titulo-agregar-producto"><span>Agregar Snack</span></h2>
+            <form method="post" enctype="multipart/form-data" class="formulario-agregar">
+                {% csrf_token %}
+                <label for="imagen" class="label">Imagen</label>
+                <input type="file" id="imagen" name="imagen" class="input" required><br>
+    
+                <label for="nombre" class="label">Nombre</label>
+                <input type="text" id="nombre" name="nombre" class="input" required><br>
+    
+                <label for="descripcion" class="label">Descripción</label>
+                <input id="descripcion" name="descripcion" class="input" required></input><br>
+    
+                <label for="precio" class="label">Precio</label>
+                <input type="number" id="precio" name="precio" class="input" required><br>
+    
+                <label for="descuento_2da_unidad" class="label">Descuento en Segunda Unidad</label>
+                <input type="number" id="descuento_2da_unidad" name="descuento_2da_unidad" class="input" required><br>
+    
+                <label for="stock" class="label">Stock</label>
+                <input type="number" id="stock" name="stock" class="input" required><br>
+
+                <input type="hidden" id="tipo" name="tipo" value="Snack">
+    
+                <button type="submit" class="form-submit">
+                    <span>Agregar Snack</span>
+                </button>
+            </form>
+        </div>
+    
+        {% comment %} Formulario agrega torta {% endcomment %}
+        <div class="formulario-wrapper">
+            <h2 class="titulo-agregar-producto"><span>Agregar Torta</span></h2>
+            <form method="post" enctype="multipart/form-data" class="formulario-agregar">
+                {% csrf_token %}
+                <label for="imagen" class="label">Imagen</label>
+                <input type="file" id="imagen" name="imagen" class="input" required><br>
+    
+                <label for="nombre" class="label">Nombre</label>
+                <input type="text" id="nombre" name="nombre" class="input" required><br>
+    
+                <label for="descripcion" class="label">Descripción</label>
+                <input id="descripcion" name="descripcion" class="input" required></input><br>
+    
+                <label for="precio" class="label">Precio</label>
+                <input type="number" id="precio" name="precio" class="input" required><br>
+    
+                <label for="precio_15p" class="label">Precio 15p</label>
+                <input type="number" id="precio_15p" name="precio_15p" class="input" required><br>
+    
+                <label for="precio_24p" class="label">Precio 24p</label>
+                <input type="number" id="precio_24p" name="precio_24p" class="input" required><br>
+    
+                <label for="stock" class="label">Stock</label>
+                <input type="number" id="stock" name="stock" class="input" required><br>
+
+                <input type="hidden" id="tipo" name="tipo" value="Torta">
+    
+                <button type="submit" class="form-submit">
+                    <span>Agregar Torta</span>
+                </button>
+            </form>
+        </div>
+    </div>
+    
+
+
+
+
+    {% comment %} ver productos {% endcomment %}
+    {% comment %} Snacks {% endcomment %}
+    <div class="productos-container">
+        <h2 class="titulo-producto">Snacks</h2>
+        <ul>
+            {% for snack in snacks %}
+            <li class="producto-item">
+                <div class="producto-imagen">
+                    <img src="{{ snack.imagen.url }}" alt="{{ snack.nombre }}">
+                </div>
+                <div class="producto-datos">
+                    <strong>Nombre:</strong> {{ snack.nombre }}<br><br>
+                    <strong>Descripción:</strong> {{ snack.descripcion }}<br><br>
+                </div>
+                <div class="producto-stock-precio">
+                    <strong>Precio:</strong> ${{ snack.precio }}<br><br>
+                    <strong>Descuento ($) en<br>la 2da Unidad:</strong> {{ snack.descuento_2da_unidad }}<br><br>
+                    <strong>Stock:</strong> {{ snack.stock }}<br>
+                </div>
+
+                <div class="botones">
+                    <button type="button" class="boton" onclick="mostrarFormulario('form-editar-{{ snack.id }}');">
+                        <img src="{% static "img/icon-decorativos/editar.png" %}" class="boton">
+                    </button>
+                    <form action="{% url 'aumentar_stock_snack' snack.id %}" method="post" class="stock-form" onsubmit="return enviarFormulario(event)">
+                        {% csrf_token %}
+                        <button type="submit" class="accion mas"><img src="{% static 'img/icon-decorativos/boton-mas.png' %}" alt="Más"></button>
+                    </form>
+                    <form action="{% url 'disminuir_stock_snack' snack.id %}" method="post" class="stock-form" onsubmit="return enviarFormulario(event)">
+                        {% csrf_token %}
+                        <button type="submit" class="accion menos"><img src="{% static 'img/icon-decorativos/boton-menos.png' %}" alt="Menos"></button>
+                    </form>
+                    <form action="{% url 'eliminar_snack' snack.id %}" method="post" class="stock-form" onsubmit="return confirmarEliminacion()">
+                        {% csrf_token %}
+                        <button type="submit" class="accion eliminar"><img src="{% static 'img/icon-decorativos/eliminar.png' %}" alt="Eliminar"></button>
+                    </form>
+                </div>
+
+
+            </li>
+            {% endfor %}
+        </ul>
+
+        {% comment %} Tortas {% endcomment %}
+        <h2 class="titulo-producto">Tortas</h2>
+        <ul>
+            {% for torta in tortas %}
+            <li class="producto-item">
+                <div class="producto-imagen">
+                    <img src="{{ torta.imagen.url }}" alt="{{ torta.nombre }}">
+                </div>
+                <div class="producto-datos">
+                    <strong>Nombre:</strong> {{ torta.nombre }}<br><br>
+                    <strong>Descripción:</strong> {{ torta.descripcion }}<br>
+                </div>
+                <div class="producto-stock-precio">
+                    <strong>Precio 7p:</strong> ${{ torta.precio }}<br><br>
+                    <strong>Precio 15p:</strong> ${{ torta.precio_15p }}<br><br>
+                    <strong>Precio 24p:</strong> ${{ torta.precio_24p }}<br><br>
+                    <strong>Stock:</strong> {{ torta.stock }}<br>
+                </div>
+
+                <div class="botones">
+                    <button type="button" class="boton" onclick="mostrarFormularioEdicion('form-editar-torta-{{ torta.id }}', 'titulo-editar-torta')">
+                        <img src="{% static "img/icon-decorativos/editar.png" %}" class="boton">
+                    </button>
+                    <form action="{% url 'aumentar_stock_torta' torta.id %}" method="post" class="stock-form" onsubmit="return enviarFormulario(event)">
+                        {% csrf_token %}
+                        <button type="submit" class="accion mas"><img src="{% static 'img/icon-decorativos/boton-mas.png' %}" alt="Más"></button>
+                    </form>
+                    <form action="{% url 'disminuir_stock_torta' torta.id %}" method="post" class="stock-form" onsubmit="return enviarFormulario(event)">
+                        {% csrf_token %}
+                        <button type="submit" class="accion menos"><img src="{% static 'img/icon-decorativos/boton-menos.png' %}" alt="Menos"></button>
+                    </form>
+                    <form action="{% url 'eliminar_torta' torta.id %}" method="post" class="stock-form" onsubmit="return confirmarEliminacion()">
+                        {% csrf_token %}
+                        <button type="submit" class="accion eliminar"><img src="{% static 'img/icon-decorativos/eliminar.png' %}" alt="Eliminar"></button>
+                    </form>
+                </div>
+                
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+
+
+
+    <!-- empiezan los Scripts -->
+    
+    <!-- Formularío de editar -->
+    <script>
+        function mostrarFormulario(formId) {
+            // Ocultar todos los formularios de edición
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.style.display = 'none';
+            });
+    
+            // Mostrar el formulario de edición correspondiente
+            document.getElementById(formId).style.display = 'block';
+        }
+    </script>
+
+    
+    <!-- muestra el titulo del formulario editar cuando este aparece -->
+    <script>
+        function mostrarFormulario(formId) {
+            // Ocultar todos los formularios de edición y títulos
+            const forms = document.querySelectorAll('form');
+            const titulos = document.querySelectorAll('h2');
+            forms.forEach(form => {
+                form.style.display = 'none';
+            });
+            titulos.forEach(titulo => {
+                titulo.style.display = 'none';
+            });
+    
+            // Mostrar el formulario de edición correspondiente y su título
+            document.getElementById(formId).style.display = 'block';
+            document.getElementById('titulo-editar-producto').style.display = 'block';
+        }
+    </script>
+
+    <!-- para el formulario editar tortas -->
+    <script>
+        function mostrarFormularioEdicion(formId, tituloId) {
+            // Ocultar todos los formularios de edición y títulos
+            const forms = document.querySelectorAll('form');
+            const titulos = document.querySelectorAll('h2');
+            forms.forEach(form => {
+                form.style.display = 'none';
+            });
+            titulos.forEach(titulo => {
+                titulo.style.display = 'none';
+            });
+        
+            // Mostrar el formulario de edición correspondiente y su título
+            document.getElementById(formId).style.display = 'block';
+            document.getElementById(tituloId).style.display = 'block';
+        }
+    </script>
+
+    <!-- cuando edita, no lo manda al inicio -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function guardarEdicion(formId) {
+            event.preventDefault(); // Evitar el comportamiento predeterminado del envío del formulario
+
+            // Obtener el formulario
+            var form = document.getElementById(formId);
+
+            // Obtener los datos del formulario
+            var formData = $(form).serialize();
+
+            // Enviar los datos mediante AJAX
+            $.ajax({
+                type: 'POST',
+                url: form.action,
+                data: formData,
+                success: function(response) {
+                    location.reload(); // Recargar la página después de guardar los cambios
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al guardar los cambios:', error);
+                }
+            });
+        }
+    </script>
+
+    <!-- no manda al usuario al inicio cuando se actualiza el stock -->
+    <script>
+        function enviarFormulario(event) {
+            event.preventDefault(); // Prevenir el envío del formulario
+            const formulario = event.target; // Obtener el formulario
+            const formData = new FormData(formulario); // Crear un objeto FormData con los datos del formulario
+            fetch(formulario.action, { // Enviar una solicitud fetch con los datos del formulario
+                method: formulario.method,
+                body: formData
+            }).then(response => {
+                if (response.ok) {
+                    window.location.reload(); // Recargar la página si la solicitud fue exitosa
+                }
+            });
+            return false; // Devolver false para cancelar el envío del formulario
+        }
+    </script>
+
+
+    <!-- confirmar eliminar -->
+    <script>
+        function confirmarEliminacion() {
+            return confirm('¿Estás seguro de que deseas eliminar este producto?');
+        }
+    </script>
+
+
+</body>
+</html>

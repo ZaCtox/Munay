@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración Munay</title>
+    <link rel="stylesheet" href="{% static 'css/admin_contabilidad.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/Munay_logo.png' %}">
+</head>
+<body>
+    <div class="header-container">
+        <h1>Distribución de Gastos y Ventas - Munay</h1>
+        <a href="{% url 'admin_contabilidad' %}" class="volver-link">
+            <img src="{% static "img/icon-decorativos/volver.png" %}" alt="Volver" class="volver-icon">
+        </a>
+    </div>
+    <!-- Formulario para seleccionar el filtro -->
+    <div class="filtro-container">
+        <form method="get" onchange="this.submit()">
+            <label for="filtro">Filtrar por:</label>
+            <select name="filtro" id="filtro">
+                <option value="diario"{% if filtro == 'diario' %} selected{% endif %}>Diario</option>
+                <option value="semanal"{% if filtro == 'semanal' %} selected{% endif %}>Semanal</option>
+                <option value="mensual"{% if filtro == 'mensual' %} selected{% endif %}>Mensual</option>
+            </select>
+        </form>        
+    </div>
+
+<!-- Aquí se mostrará el gráfico -->
+<div class="graph-container">
+    <h2 class="graph-title">Gráfico de Ventas y Gastos</h2>
+    <div id="grafico" style="width: 100%; height: 100%;"></div>
+        {{ graph_html|safe }}
+    </div>
+</div>
+
+    <!-- Script para la biblioteca Plotly -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</body>
+</html>
+

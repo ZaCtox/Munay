@@ -1,0 +1,307 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.header-container {
+    display: flex;
+    align-items: center; /* Centra verticalmente los elementos */
+    background-color: #D98359; /* Color de fondo */
+    padding: 20px; /* Añade un espacio alrededor del texto */
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4); /* Sombra de texto */
+}
+
+/* Estilos para el título de la página */
+h1 {
+    flex: 1; /* Ocupa todo el espacio restante */
+    text-align: center; /* Centra el título */
+    color: #ffffff; /* Color del texto */
+    font-size: clamp(24px, 5vw, 36px); /* Utilizando clamp() para definir el tamaño de fuente */
+    margin: 0; /* Elimina el margen */
+}
+
+
+.volver-icon {
+    width: clamp(40px, 10vw, 60px); /* Utilizando clamp() para definir el tamaño del ícono */
+    height: auto; /* Permite que la altura se ajuste automáticamente según el ancho */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el ícono */
+}
+
+
+
+
+/* aqui empieza el diseño del contenedor de cada producto */
+.productos-container {
+    margin: 20px;
+}
+
+.productos-container ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.producto-item {
+    position: relative; /* Añadimos posición relativa */
+    width: calc(50% - 20px); /* Ajustar el tamaño para que quepan dos elementos en una fila */
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    margin-right: 20px; /* Agregar margen derecho para crear separación entre los elementos */
+    padding: 10px;
+    box-sizing: border-box; /* Incluir el padding en el ancho total */
+    display: flex; /* Cambia el comportamiento a flexbox */
+
+}
+
+.producto-item:nth-child(2n) { /* yo no veo diferencia (se puede eliminar) */
+    margin-right: 0; /* Eliminar el margen derecho del último elemento en cada fila */
+}
+
+
+.producto-imagen {
+    width: 300px;
+    height: auto;
+    margin-right: 20px;
+}
+
+.producto-imagen img {
+    width: 100%;
+    height: auto;
+}
+
+.producto-datos {
+    width: 33.33%;
+    padding-right: 20px;
+}
+
+.producto-stock-precio {
+    width: 33.33%;
+}
+
+
+/* botones que hay en cada producto existente */
+.botones {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column; /* Cambiar la dirección del flex a columna */
+}
+
+.botones button {
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+
+.botones img {
+    width: 30px;
+    height: auto;
+}
+
+
+.formulario-container {
+    max-width: 1700px;
+    margin: 0 auto;
+    padding: 5px;
+    display: flex; /* Convertir el contenedor en un flex container */
+    justify-content: space-between; /* Distribuir los formularios horizontalmente */
+}
+
+.formulario-wrapper {
+    width: calc(50% - 20px); /* Ancho del 50% con espacio entre los formularios */
+    margin-bottom: 20px; /* Agregar espacio entre los formularios */
+}
+
+/* Consulta de medios para dispositivos móviles */
+@media (max-width: 767px) {
+    .formulario-container {
+        max-width: 100%; /* Reducir el ancho máximo del contenedor en dispositivos móviles */
+        flex-direction: column;
+    }
+
+    .formulario-wrapper {
+        width: calc(100% - 40px); /* Establecer el ancho completo en dispositivos móviles */
+    }
+
+    .formulario-agregar {
+        width: calc(100% - 400px); /* Establecer el ancho completo del formulario en dispositivos móviles */
+    }
+
+    .producto-item {
+        width: calc(100% - 20px); /* Establecer el ancho completo en dispositivos móviles */
+        flex-direction: column; /* Cambiar a disposición vertical */
+    }
+
+    .producto-imagen {
+        margin-right: 0; /* Eliminar el margen derecho en dispositivos móviles */
+    }
+
+    .producto-imagen img {
+        width: 90%; /* Establecer el ancho completo de la imagen en dispositivos móviles */
+        height: auto; /* Mantener la proporción de la imagen */
+    }
+
+    .producto-datos,
+    .producto-stock-precio {
+        width: 90%; /* Establecer el ancho completo en dispositivos móviles */
+        padding-right: 0; /* Eliminar el relleno derecho en dispositivos móviles */
+    }
+
+    .botones {
+        display: flex; /* Cambiar a disposición horizontal */
+        justify-content: center; /* Centrar horizontalmente */
+        margin-top: 10px; /* Añadir margen superior */
+    }
+
+    .botones button {
+        margin: 0 5px; /* Añadir margen horizontal entre botones */
+    }
+}
+
+
+/* Estilos para el formulario de agregar producto */
+.titulo-agregar-producto {
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4);
+}
+
+.titulo-agregar-producto span {
+    background-color: #995d40; /* Color de fondo */
+    padding: 8px 16px; /* Ajusta el espaciado interior */
+    border-radius: 8px; /* Bordes redondeados */
+}
+
+.formulario-agregar {
+    width: auto;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5eae8;
+    border: 15px double #D98359;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.input, .form-select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#imagen {
+    background-color: #ffffff; /* Cambiar el color de fondo según tu preferencia */
+}
+/* para el agregar imagen que se ve raro
+.form-group-imagen {
+    background-color: #ffffff;
+    border-radius: 10px;
+    margin-top: 10px;
+}*/
+
+/* estilos para el boton de agregar producto */
+.form-submit {
+    border: 0;
+    background-image: linear-gradient(
+        150deg, #d79372, #db6b73, #D9B3A1
+    );
+    border-radius: 8px;
+    color: #ffffff;
+    display: flex;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 6px;
+    cursor: pointer;
+    transition: .3s;
+    position: relative;
+}
+
+.form-submit span {
+    background-color: #111;
+    padding: 16px 24px;
+    border-radius: 6px;
+    transition: .3s;
+}
+
+.form-submit:hover span {
+    color: #111;
+    background-image: linear-gradient(
+        150deg, #d79372, #db6b73, #D9B3A1
+    );
+}
+
+.form-submit:active {
+    transform: scale(0.9);
+}
+
+
+/* Estilos para el título del formulario editar producto */
+#titulo-editar-producto, #titulo-editar-torta {
+    text-align: left; /* Centra el texto del título */
+    color: #ffffff; /* Color del texto */
+    margin-bottom: 20px;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4); /* Sombra de texto */
+}
+
+#titulo-editar-producto span, #titulo-editar-torta span {
+    background-color: #ffc006; /* Color de fondo */
+    padding: 8px 16px; /* Ajusta el espaciado interior */
+    border-radius: 8px; /* Bordes redondeados */
+}
+
+.formulario-editar {
+    width: 50%; /* Establece el ancho del formulario al 50% */
+    border: 7px double #ffc006; /* Cambia el grosor y el color del borde */
+    margin: 0; /* Elimina el margen para que el formulario esté pegado al lado izquierdo */
+    background-color: #f7f4ea; /* Fondo blanco */
+    padding: 20px;
+    border-radius: 10px; /* Bordes redondeados */
+    box-sizing: border-box; /* Asegura que el ancho incluya el relleno y el borde */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra ligera */
+}
+
+.form-submit-editar {
+    border: 0;
+    background-image: linear-gradient(
+        150deg, #E0C758, #C7E058, #E0D758
+    );
+    border-radius: 8px;
+    color: #ffffff;
+    display: flex;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 6px;
+    cursor: pointer;
+    transition: .3s;
+    position: relative;
+}
+
+.form-submit-editar span {
+    background-color: #111;
+    padding: 16px 24px;
+    border-radius: 6px;
+    transition: .3s;
+}
+
+.form-submit-editar:hover span {
+    color: #111;
+    background-image: linear-gradient(
+        150deg, #debe2f, #C7E058, #e0d437
+    );
+}
+
+.form-submit-editar:active {
+    transform: scale(0.9);
+}

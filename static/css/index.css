@@ -1,0 +1,541 @@
+@import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
+
+body {                              
+    background-color: #c0916d; 
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; /* Establece una altura mínima del cuerpo para ocupar al menos toda la altura visible */
+    display: flex;
+    flex-direction: column;
+} 
+
+main {
+    flex: 1;
+    background-color: #ffffff;
+}
+
+div ul li img {
+    max-width: 5rem;
+    height: auto;
+    display: block;
+    margin: 0 auto; /* Centra horizontalmente */
+}
+
+
+.titulo {
+    text-align: center;
+    padding-top: 1rem;
+    margin: 0%;
+    font-size: clamp(30px, 6vw, 40px); /* Utilizando clamp() para definir el tamaño de fuente */
+    color: white;
+    background-color: #c0916d;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+.subtitulo {
+    text-align: center;
+    margin:0%;
+    padding-bottom: 20px;
+    color: white;
+    background-color: #c0916d;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+.barra_principal {
+    background-color: #b88674;
+    display: grid; /* Mostrar la barra principal en pantallas grandes */
+    grid-template-columns: 1fr 1.1fr 1fr;
+    align-items: center;
+    justify-items: center;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin-bottom: 0%;
+}
+
+.barra_principal.mobile-menu{
+    display: none; /* Mostrar la barra en dispositivos móviles */
+}
+.opcion-barra-principal {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: clamp(11px, 2vw, 10px) clamp(8px, 1.5vw, 3px);
+    text-decoration: none;
+    font-size: clamp(10px, 1.5vw, 24px);
+}
+
+.opcion-barra-principal.active {
+    text-decoration: underline;
+    font-size: clamp(27px, 4vw, 32px); /* Utilizando clamp() para definir el tamaño de fuente */
+}
+
+.opcion-barra-principal:hover {
+    color: white;
+    background-color: #743a3a;
+    transition: background-color .3s ease;
+    border-radius: 7px;
+}
+
+
+div ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+
+.footer {
+    background-color: rgba(240, 240, 240, clamp(0.5, 1, 1)); /* Utilizando clamp() para definir el canal alfa (transparencia) */
+    background-color: #b88674;
+    padding: auto;
+    display: flex;
+    justify-content: space-around;
+    margin-top: auto; /* Empuja el pie de página hacia la parte inferior del contenedor flex */
+  }
+  
+  .footer-column {
+    text-align: center;
+  }
+  
+  .footer-title {
+    color: #ffffff; /* Color de texto oscuro */
+    font-size: clamp(12px, 3vw, 24px); /* Utilizando clamp() para definir el tamaño de fuente del título */
+
+  }
+  
+  .footer-texto {
+    text-align: center;
+    color: #ffffff; /* Color de texto oscuro */
+    font-size: clamp(10px, 2vw, 18px); /* Utilizando clamp() para definir el tamaño de fuente del texto */
+    margin: clamp(5px, 2vw, 20px) 0; /* Utilizando clamp() para definir el margen vertical */
+  }
+  
+  .enlace-contacto-footer {
+    color: #ffffff; /* Color de los enlaces */
+    text-align: center;
+    text-decoration: none; /* Sin subrayado en los enlaces */
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    font-size: clamp(14px, 2vw, 18px); /* Utilizando clamp() para definir el tamaño de fuente del texto */
+    padding: 0.1rem;
+    
+  }
+  
+  .footer-texto a:hover {
+    color: white; /* Cambia el color del enlace a blanco */
+}
+
+  
+  
+
+/* Media query para dispositivos móviles */
+@media only screen and (max-width: 930px) {
+
+    .barra_principal{
+        display: none;
+    }
+    
+    .footer{
+        display:grid;
+    }
+
+    .barra_principal.mobile-menu {
+        display: flex; /* Mostrar los elementos en línea */
+        align-items: center; /* Alinear verticalmente los elementos */
+        justify-content: space-between; /* Distribuir el espacio entre los elementos */
+    }
+
+    .barra_principal.mobile-menu {
+        position: relative; /* Establecer el contexto de posicionamiento */
+    }
+    
+    /* Estilos para las opciones del menú móvil */
+    .opciones-barra-principal {
+        display: none;
+        background-color: #b88674;
+        position: fixed; /* Cambiar a posición fija */
+        top: calc(100% + 10px); /* Colocar el menú debajo del botón de menú */
+        left: 0;
+        width: 100%;
+        padding: 10px 0;
+        z-index: 999;
+    }
+
+
+
+
+    .opciones-barra-principal a:hover {
+        color: white; /* Cambia el color del texto al pasar el mouse */
+        background-color: #996f60; /* Cambia el color de fondo al pasar el mouse */
+        transition: background-color .3s ease; /* Agrega una transición suave */
+        border-radius: 7px; /* Agrega bordes redondeados a los enlaces al pasar el mouse */
+    }
+
+    .opciones-barra-principal.show {
+        display: block;
+    }
+
+
+    .opciones-barra-principal.active {
+        display: block;
+        position: absolute;
+        top: clamp(95%, calc(85% + 10px), calc(95% + 20px));
+        left: 0;
+        width: 30%;
+        background-color: #b88674;
+        padding: clamp(5px, 2vw, 14px) 0;
+        z-index: 9999;
+        border-bottom-right-radius: 10px;
+    }
+    
+    .opciones-barra-principal a {
+        color: white;
+        text-decoration: none;
+        font-size: clamp(14px, 2.5vw, 20px); /* Utilizando clamp() para definir el tamaño de fuente */
+        display: block;
+        padding: clamp(10px, 2vw, 14px) clamp(12px, 2vw, 16px); /* Utilizando clamp() para definir el relleno */
+    }
+    
+    
+    .opciones-barra-principal li {
+        text-align: center; /* Centrar el texto */
+    }
+    
+    /* Estilos para el botón del menú móvil */
+    .mobile-menu-btn {
+        display: block;
+        color: white;
+        background-color: #b88674;
+        padding: 0;
+        text-decoration: none;
+        font-size: 20px;
+        border: none;
+        width: auto;
+        text-align: left;
+        margin-left: 2%;
+    }
+
+    .owl-carousel {
+        width: 45%; /* Establece un ancho máximo del 100% para el carrusel */
+        overflow: hidden; /* Oculta cualquier contenido que se desborde del carrusel */
+    }
+    
+}
+    
+    
+
+/*         aqui EMPIEZA quienes_somos.html****************************************************************          */
+.titulo-quienes-somos {
+    text-align: center;
+    margin-top: 0;
+    color: #996f60;
+    text-decoration: underline;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2); /* Sombra de texto */
+}
+
+
+
+/* Estilos específicos para las imagenes en quienes_somos.html */
+.quienes-somos-img {
+    max-width: 50%; /* La imagen no será más ancha que su contenedor */
+    height: auto; /* Mantiene la proporción original de la imagen */
+    border-radius: 3%;
+}
+
+/* Estilos para el contenedor que alinea la imagen y el texto */
+.contenido {
+    padding: 40px;
+    display: flex;
+    align-items: center; /* Alinea verticalmente los elementos */
+}
+
+/* Estilos específicos para el texto al lado derecho de la imagen */
+.texto {
+    margin: 10px;
+    margin-left: 30px; /* Ajusta el margen según tus preferencias */
+    margin-right: 30px;
+    text-align: justify;
+    font-size: 23px;
+    line-height: 1.2;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.feria {
+    width: 500px;
+    height: auto;
+    border-radius: 3%;
+}
+
+.contenido-pintado {
+    padding: 40px;
+    display: flex;
+    align-items: center; /* Alinea verticalmente los elementos */
+    background-color: rgba(151, 119, 86, 0.3);
+    border-radius: 1%;
+}
+
+.titulo-parrafo {
+    color: #b88674;
+    text-align: center;
+}
+
+.titulo-subparrafo{
+    color: #996f60;
+    text-align: center;
+    text-decoration:wavy;
+    font-size: 30px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2); /* Sombra de texto */
+}
+
+.icon-quines-somos {
+    max-width: 90px; /* Ajusta el tamaño máximo según tus preferencias */
+}
+
+
+.titulo-quienes-somos {
+    text-align: center;
+    color: #996f60;
+    text-decoration: underline;
+    position: relative; /* Necesario para posicionar el ::before */
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+/*         aqui TERMINA quienes_somos.html****************************************************************          */
+
+
+
+
+
+
+/*         aqui EMPIEZA contactanos.html****************************************************************          */
+.titulo-contactanos {
+    text-align: center;
+    color: #996f60;
+    margin-top: 0;
+    text-decoration: underline;
+    max-block-size: clamp(30px, 10vw, 50px); /* Utilizando clamp() para definir el tamaño máximo del bloque */
+    font-size: clamp(30px, 5vw, 45px); /* Utilizando clamp() para definir el tamaño de fuente */
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2); /* Sombra de texto */
+}
+
+.texto-contactanos {
+    margin-left: 30px; /* Ajusta el margen según tus preferencias */
+    margin-right: 30px;
+    text-align: center;
+    font-size: clamp(16px, 2vw, 19px); /* Utilizando clamp() para definir el tamaño de fuente */
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.titulo-opcion-contacto, .enlace-contacto {
+    display: block;
+    color: black;
+    text-align: center;
+    padding: clamp(14px, 2%, 20px) clamp(16px, 2%, 24px); /* Utilizando clamp() para definir el relleno */
+    text-decoration: none;
+    font-size: clamp(14px, 2.5vw, 20px); /* Utilizando clamp() para definir el tamaño de fuente */
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+
+.img-contacto {
+    max-width: clamp(50px, 10%, 100px); /* Utilizando clamp() para definir el ancho máximo de la imagen */
+    height: auto; /* Mantiene la proporción original de la imagen */
+}
+
+.contacto-container {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* Dos columnas de igual tamaño */
+    gap: clamp(10px, 2%, 20px); /* Utilizando clamp() para definir el espacio entre columnas y filas */
+}
+
+.elementos-contacto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-radius: clamp(10px, 2%, 20px); /* Utilizando clamp() para definir el radio de borde */
+    border: 5px solid #743a3a; /* Borde para separar visualmente los elementos */
+    padding: clamp(5px, 1%, 10px); /* Utilizando clamp() para definir el relleno */
+}
+
+.enlace-contacto {
+    display: block;
+    color: black;
+    text-align: center;
+    padding: clamp(10px, 2%, 14px) clamp(12px, 2%, 16px); /* Utilizando clamp() para definir el relleno */
+    text-decoration: none;
+    font-size: clamp(16px, 2.5vw, 20px); /* Utilizando clamp() para definir el tamaño de fuente */
+}
+
+.enlace-contacto:hover {
+    color: white;
+    background-color: #996f60;
+    transition: background-color .3s ease;
+    border-radius: clamp(3px, 0.5%, 7px); /* Utilizando clamp() para definir el radio de borde */
+}
+
+
+/*         aqui TERMINA contactanos.html****************************************************************          */
+
+
+
+
+
+/*         aqui EMPIEZA el carrousel****************************************************************          */
+
+.owl-carousel {
+    margin: 0 auto; /* Esto centrará horizontalmente el carrusel */
+    width: 45%;
+    max-width: 45%;
+}
+
+.owl-carousel .item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.owl-carousel .item img {
+    max-width: clamp(200px, 50%, 100%); /* Ancho máximo de 200px, o el 50% del contenedor, o el 100% del contenedor, lo que sea menor */
+    height: auto;
+    border-radius: 10px;
+    margin-top: clamp(1rem, 5%, 2rem); /* Margen superior entre 1rem y 2rem, o el 5% del contenedor, lo que sea mayor */
+}
+
+.owl-carousel .item .text {
+    width: clamp(200px, 50%, 100%); /* Ancho máximo de 200px, o el 50% del contenedor, o el 100% del contenedor, lo que sea menor */
+    text-align: center; /* Alinea el texto al centro */
+    margin-top: clamp(1rem, 5%, 2rem); /* Margen superior entre 1rem y 2rem, o el 5% del contenedor, lo que sea mayor */
+    padding: 0 clamp(10px, 2%, 20px); /* Relleno entre 10px y 20px, o el 2% del contenedor, lo que sea mayor */
+    color: #000000; /* Color del texto */
+    font-size: clamp(8px, 2vw, 20px); /* Tamaño de fuente entre 14px y 20px, o el 2% del viewport width, lo que sea mayor */
+}
+
+.text .btn-below-text {
+    display: block;
+    margin-top: 20px; /* Puedes ajustar este valor según sea necesario */
+    text-align: center;
+    color: #ffffff;
+    background-color: #b88674;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.text .btn-below-text:hover {
+    background-color: #a96c5b;
+    transform: scale(1.1); /* Aumentar el tamaño en un 10% */
+}
+
+
+
+
+.carousel-container {
+    position: relative;
+    overflow: hidden;
+    max-width: 45%;
+    margin-top: 1rem; /* Ajusta el margen superior según sea necesario */
+}
+
+.carousel-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+    padding: 20px;
+}
+
+.carousel-text {
+    text-align: center;
+    margin-top: 20px; /* Ajusta el margen superior según sea necesario */
+}
+
+.btn-ver-productos {
+    display: block;
+    width: clamp(150px, 30%, 200px); /* Utilizando clamp() para definir el ancho máximo */
+    background-color: #c0916d; /* Color del botón */
+    color: #fff; /* Color del texto del botón */
+    text-align: center;
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: clamp(22px, 2vw, 30px); /* Utilizando clamp() para definir el tamaño de fuente */
+    padding: clamp(10px, 2vw, 15px) 20px; /* Utilizando clamp() para definir el relleno */
+    position: absolute; /* Establece el posicionamiento absoluto para que el botón pueda posicionarse dentro del contenedor */
+    top: 50%; /* Posiciona el botón en la mitad superior del contenedor */
+    right: 0; /* Ajusta la distancia del botón desde el borde derecho del contenedor */
+    transform: translateY(-50%); /* Centra verticalmente el botón con respecto al contenedor */
+    transform: translateX(50%); /* Centra verticalmente el botón con respecto al contenedor */
+    margin-right: 50%; 
+}
+
+
+.btn-ver-productos:hover {
+    background-color: #8d5830; /* Color del botón al pasar el mouse */
+}
+
+.space {
+    margin-top: 1%; /* Establece la altura del espacio según tus necesidades */
+}
+
+.full-width-image {
+    width: 100%; /* La imagen ocupará todo el ancho disponible */
+    height: auto; /* Mantendrá la proporción y se adaptará verticalmente */
+    display: block; /* Para asegurar que la imagen se muestre como bloque y ocupe todo el ancho disponible */
+
+}
+
+.image-container {
+    position: relative;
+    width: 100%;
+    height: 100%; /* Ajusta la altura según necesites */
+    background-size: cover; /* Escala la imagen para cubrir todo el contenedor */
+    background-position: center; /* Centra la imagen en el contenedor */
+    opacity: 0.89;
+
+}
+
+.text-inside-image {
+    position: absolute;
+    top: 30%; /* Ajusta la posición vertical del texto */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(192, 145, 109, 0.7); /* Color de fondo del texto */
+    color: #ffffff; /* Color del texto */
+    padding: 20px; /* Espaciado interno del texto */
+    border-radius: 10px; /* Borde redondeado */
+    font-size: clamp(20px, 3vw, 30px); /* Tamaño de fuente adaptable */
+    text-align: center; /* Alineación del texto al centro */
+    opacity: 0.9; /* Opacidad del fondo del texto */
+    z-index: 1; /* Asegura que el texto esté sobre la imagen */
+}
+
+
+/* Estilos para dispositivos móviles */
+@media only screen and (max-width: 1278px) {
+    .owl-carousel {
+        margin: 0; /* Esto eliminará el margen horizontal en dispositivos móviles */
+        width: 100%; /* Establece el ancho al 100% para que ocupe todo el ancho disponible */
+        max-width: 100%; /* Establece el ancho máximo al 100% */
+        
+    }
+    .full-width-image{
+        border-radius: 23px;
+    }
+}
+
+/* Estilos para pantallas más grandes */
+@media only screen and (min-width: 1279px) {
+    .owl-carousel {
+        margin: 0 auto; /* Esto centrará horizontalmente el carrusel en pantallas más grandes */
+        width: 45%;
+        max-width: 45%;
+    }
+}
+
+

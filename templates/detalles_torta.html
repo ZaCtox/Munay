@@ -1,0 +1,33 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="contenedor-detalle-producto">
+        <header>
+            <div class="nombre-detalle-producto">{{ producto.nombre }}</div>
+        </header>
+
+        <div class="imagen-detalle-producto">
+            <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
+        </div>
+        <div class="descripcion-detalle-producto">{{ producto.descripcion }}</div>
+        <div class="precio-detalle-producto">Precio 7 Personas: $ {{ producto.precio }}</div>
+        <div class="precio-detalle-producto">Precio 15 Personas: $ {{ producto.precio_15p }}</div>
+        <div class="precio-detalle-producto">Precio 24 Personas: $ {{ producto.precio_24p }}</div><br>
+
+        <form method="post" action="{% url 'agregar_al_carrito' %}" class="agregar-carrito-form">
+            <div class="contenedor-botones-carrito">
+                {% csrf_token %}
+                <input type="hidden" name="producto_id" value="{{ producto.id }}">
+                <input type="hidden" name="tipo" value="Torta">
+                <div class="boton-izq">
+                    <label for="cantidad">Cantidad:</label>
+                    <input type="number" name="cantidad" id="cantidad" value="1" min="1">
+                </div>
+                <div class="boton-der">
+                    <button type="submit" class="boton-agregar-carrito">Agregar al Carrito</button>
+                </div>
+            </div>
+        </form>
+    </div><br>
+{% endblock %}

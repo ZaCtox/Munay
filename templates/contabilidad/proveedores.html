@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración Munay</title>
+    <link rel="stylesheet" href="{% static 'css/admin_contabilidad.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/Munay_logo.png' %}">
+</head>
+<body>
+
+<div class="header-container">
+    <h1>Administración de Proveedores - Munay</h1>
+    <a href="{% url 'admin_contabilidad' %}" class="volver-link">
+        <img src="{% static "img/icon-decorativos/volver.png" %}" alt="Volver" class="volver-icon">
+    </a>
+</div><br><br>
+
+<!-- mensaje cuando se agrega un producto correctamente -->
+{% if messages %}
+<div class="message-container">
+    <div class="message-success-container">
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                <div class="message-success texto-negro">{{ message }}</div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="message-error-container">
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <div class="message-error texto-negro">{{ message }}</div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<div class="container formulario">
+    <h2 class="titulo-agregar-producto"><span>¿Quiere agregar un nuevo proveedor?</span></h2>
+
+    <form method="post" action="{% url 'proveedores' %}" enctype="multipart/form-data" onsubmit="return validarFormulario();">
+        {% csrf_token %}
+        <input type="hidden" name="tipoR" value="proveedor">
+
+        <div class="group">
+            <label for="rutR" class="label">Rut: </label>
+            <input id="rutR" type="text" name="rutR" class="input">
+        </div>
+
+        <div class="group">
+            <label for="nombreR" class="label">Nombre: </label>
+            <input id="nombreR" type="text" name="nombreR" class="input">
+        </div>
+
+        <div class="group">
+            <label for="telefonoR" class="label">Teléfono: +56</label>
+            <input id="telefonoR" type="text" name="telefonoR" class="input">
+        </div>
+
+        <div class="group">
+            <button type="submit" class="form-submit">Agregar Proveedor</button>
+        </div>
+    </form>
+</div>
+
+
+<!-- Tabla para mostrar todos los proveedores -->
+<div class="container">
+    <h2>Lista de proveedores</h2>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Rut</th>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for proveedor in proveedores %}
+                <tr>
+                    <td>{{ proveedor.rut }}</td>
+                    <td>{{ proveedor.nombre }}</td>
+                    <td>{{ proveedor.telefono }}</td>
+                    <td>
+                        <!-- Agrega un formulario con un botón para enviar la solicitud de eliminación -->
+                        <form action="{% url 'eliminar_proveedor' proveedor.id %}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este proveedor?')">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-eliminar"> Eliminar</button>
+                            <input type="hidden" name="proveedor_id" value="{{ proveedor.id }}">
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Función para validar el formulario antes de enviarlo
+    function validarFormulario() {
+        var rut = document.getElementById('rutR').value;
+        var nombre = document.getElementById('nombreR').value;
+        var telefono = document.getElementById('telefonoR').value;
+
+        // Verificar si algún campo está vacío
+        if (!nombre || !telefono) {
+            alert("Todos los campos son obligatorios excepto el RUT.");
+            return false; // Detener el envío del formulario
+        }
+        return true; // Permitir el envío del formulario si todos los campos están llenos
+    }
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var messageContainer = document.querySelector('.message-container');
+    
+        if (messageContainer) {
+            // Mostrar el mensaje flash
+            messageContainer.style.opacity = '1'; // Inicia con opacidad completa
+    
+            // Gradualmente reduce la opacidad
+            var fadeOutInterval = setInterval(function() {
+                messageContainer.style.opacity -= 0.1; // Reduce la opacidad en 0.1 cada 100ms
+                if (messageContainer.style.opacity <= 0) {
+                    clearInterval(fadeOutInterval); // Detiene la animación cuando la opacidad llega a 0
+                    messageContainer.style.display = 'none'; // Oculta el mensaje cuando la animación ha terminado
+                }
+            }, 150); // Ejecuta la animación cada 100ms
+    
+            // Cambia la duración de la animación según sea necesario
+            var animationDuration = 4000; // Duración total de la animación en milisegundos
+            setTimeout(function() {
+                clearInterval(fadeOutInterval); // Detiene la animación después del tiempo especificado
+                messageContainer.style.display = 'none'; // Oculta el mensaje después de la animación
+            }, animationDuration);
+        }
+    });
+</script>
+</body>
+</html>

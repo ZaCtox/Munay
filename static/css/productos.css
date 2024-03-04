@@ -1,0 +1,264 @@
+* {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.imagen-filtro {
+    width: clamp(200px, 40%, 300px); /* Ancho con clamp */
+    height: auto; /* Altura automática para mantener la proporción */
+    display: block; /* Mostrar como bloque para centrar */
+    margin: 0 auto 20px; /* Centrar horizontalmente y agregar espacio inferior */
+    cursor: pointer; /* Cambiar el cursor al pasar por encima */
+    border-radius: 10px;
+    transition: transform 0.3s ease; /* Transición suave para el cambio de tamaño */
+}
+
+.imagen-filtro:hover {
+    transform: scale(1.1); /* Por ejemplo, aumentar un poco el tamaño */
+}
+
+.imagen-filtro:active {
+    transform: scale(.9);
+}
+
+
+.botones-container {
+    text-align: center;
+    margin: 0 auto 20px; /* Centrar horizontalmente y agregar espacio inferior */
+    display: flex; /* Utilizar flexbox para alinear verticalmente los botones */
+    justify-content: center; /* Centrar horizontalmente los botones */
+    align-items: center; /* Centrar verticalmente los botones */
+}
+
+
+/* Estilos para los botones dentro de .botones-container */
+.botones-container button {
+    margin: 0 10px; /* Espacio entre los botones */
+    cursor: pointer; /* Cambiar el cursor al pasar por encima */
+    border-radius: 10px; /* Borde redondeado */
+    background: none; /* Eliminar el fondo gris por defecto */
+    border: none; /* Eliminar el borde */
+    display: inline-block; /* Agregar esta propiedad */
+    vertical-align: middle; /* Alinear verticalmente */
+}
+
+
+
+
+
+
+/* Estilos para los contenedores de productos */
+.product-container {
+    display: flex; /* Utilizar el modelo de caja flexible para los productos */
+    flex-wrap: wrap; /* Permitir que los productos se envuelvan si no caben en una fila */
+    justify-content: center; /* Centrar los productos horizontalmente */
+}
+
+.producto {
+    width: clamp(300px, 40%, 400px); /* Ancho con clamp */
+    margin: 10px; /* Espacio entre los contenedores de producto */
+    border: 1px solid #ccc; /* Borde para los contenedores de producto */
+    padding: 10px; /* Espacio interno dentro de los contenedores de producto */
+    display: flex; /* Utilizar el modelo de caja flexible para los elementos dentro del contenedor */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Estilos para la imagen del producto */
+.producto-imagen {
+    flex: 1; /* Ocupar el 50% del espacio disponible */
+    text-align: center; /* Centrar la imagen horizontalmente */
+}
+
+.producto-imagen img {
+    width: 100%; /* Ancho al 100% */
+    height: auto; /* Altura automática para mantener la proporción */
+}
+
+/* Estilos para la información del producto */
+.producto-info {
+    flex: 1; /* Ocupar el 50% del espacio disponible */
+    padding-left: 10px; /* Espacio a la izquierda para separar la imagen y la información */
+    display: flex; /* Utilizar el modelo de caja flexible para los elementos dentro del contenedor */
+    flex-direction: column; /* Colocar los elementos en columna */
+    justify-content: space-between; /* Espacio uniforme entre los elementos */
+}
+
+.producto-nombre, .producto-precio {
+    font-weight: bold; /* Hacer el nombre del producto en negrita */
+    font-size: 20px;
+}
+
+
+/* Estilos para el buscador */
+.search-form {
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.search-container {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 20px;
+    border: 3px solid #805743;
+}
+
+.search-input { /* cuando sale de ese borde, desaparece*/
+    padding: 12px;
+    width: 300px;
+    border: none;
+    outline: none; /* Evita el contorno al hacer clic */
+    border-radius: 20px;
+}
+
+
+.search-button {
+    border: none;
+    background: none;
+    border-radius: 15px;
+    margin-right: 7px;
+    padding: 6px;
+    cursor: pointer;
+    transition: .3s;
+    position: relative;
+}
+
+.search-button:hover {
+    background-image: linear-gradient(
+        150deg, #da666e, #d8ac97, #d7926f
+    );
+}
+
+.search-button:active {
+    transform: scale(0.8);
+}
+
+.search-input:hover {
+    background-color: #f0f0f0; /* Cambia el color de fondo al pasar el cursor */
+    transition: background-color 0.3s ease;
+}
+
+.lupa {
+    width: 23px;
+    height: auto;
+}
+
+
+/* Estilos para el placeholder del input */
+.search-input::placeholder {
+    pointer-events: none;
+    font-size: 1.4em;
+    font-weight: bold;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: rgba(144, 102, 82, 0.7);
+    /* text-transform: uppercase; */
+    transition: 0.5s;
+}
+
+.search-input:focus::placeholder,
+.search-input:not(:placeholder-shown)::placeholder {
+    transform: translateX(15px) translateY(-27px);
+    font-size: 1.2em;
+}
+
+
+
+.producto-link {
+    text-decoration: none; /* Eliminar el subrayado del enlace */
+    color: inherit; /* Heredar el color del texto normal */
+}
+
+
+
+
+
+/* detalles procucto */
+
+.contenedor-detalle-producto {
+    max-width: 600px; /* Reduje el ancho máximo para centrar mejor el contenido */
+    margin: 0 auto;
+    padding: 20px;
+    border: 2px solid #c0916d;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+
+}
+
+.contenedor-detalle-producto header {
+    text-align: center; /* Alineado el texto del encabezado al centro */
+}
+
+.nombre-detalle-producto {
+    font-weight: bold;
+    color: white;
+    background-color: #b88674;
+    padding: 10px 20px; /* Agregué un poco más de espacio alrededor del texto */
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.imagen-detalle-producto img {
+    max-width: 55%; /* Modificado el tamaño máximo de la imagen */
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.descripcion-detalle-producto {
+    margin-bottom: 20px;
+}
+
+
+
+
+
+/* Estilos para botones */
+
+.contenedor-botones-carrito {
+    display: flex;
+    justify-content: space-between;
+}
+
+.boton-izq button {
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.boton-izq img {
+    width: 30px;
+    height: auto;
+}
+
+
+.boton-agregar-carrito {
+    border: 0;
+    background-color: #FED083;
+    border-radius: 8px;
+    color: #000000;
+    display: flex;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px;
+    cursor: pointer;
+    transition: .3s;
+    position: relative;
+}
+
+.boton-agregar-carrito:hover {
+    color: #111;
+    background-image: linear-gradient(
+        150deg, #b88674, #FED083, #b88674
+    );
+}
+
+.boton-agregar-carrito:active {
+    transform: scale(.9);
+}
+
+.h2{
+    margin-top: 0%;
+}

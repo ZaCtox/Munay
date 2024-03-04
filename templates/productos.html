@@ -1,0 +1,67 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block content %}
+    <h2>Categorias</h2>
+    <div class="botones-container">
+        <form method="GET" action="{% url 'productos' %}">
+            <button type="submit" name="category" value="Snack">
+                <img src="{% static 'img/snacks.png' %}" alt="Snack" class="imagen-filtro">
+            </button>
+            <button type="submit" name="category" value="Torta">
+                <img src="{% static 'img/tortas.png' %}" alt="Torta" class="imagen-filtro">
+            </button>
+        </form>
+    </div>
+
+
+    <!-- Buscador por nombre -->
+    <form action="{% url 'buscar_producto' %}" method="GET" class="search-form">
+        <div class="search-container">
+            <input type="text" name="search" placeholder="Buscar" class="search-input">
+            <button type="submit" class="search-button">
+                <img src="{% static 'img/icon-decorativos/lupa.png' %}" alt="Buscar" class="lupa">
+            </button>
+        </div>
+    </form>
+
+
+    <!-- Productos -->
+    {% if snacks %}
+    <h2>Snacks</h2>
+    <div id="snackProducts" class="product-container">
+        {% for snack in snacks %}
+            <a href="{% url 'detalles_snack' snack.id %}" class="producto-link">
+                <div class="producto">
+                    <div class="producto-imagen">
+                        <img src="{{ snack.imagen.url }}" alt="{{ snack.nombre }}">
+                    </div>
+                    <div class="producto-info">
+                        <div class="producto-nombre">{{ snack.nombre }}</div>
+                        <div class="producto-precio">$ {{ snack.precio }}</div>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if tortas %}
+    <br><h2>Tortas</h2>
+    <div id="tortaProducts" class="product-container">
+        {% for torta in tortas %}
+            <a href="{% url 'detalles_torta' torta.id %}" class="producto-link">
+                <div class="producto">
+                    <div class="producto-imagen">
+                        <img src="{{ torta.imagen.url }}" alt="{{ torta.nombre }}">
+                    </div>
+                    <div class="producto-info">
+                        <div class="producto-nombre">{{ torta.nombre }}</div>
+                        <div class="producto-precio">$ {{ torta.precio }}</div>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+    {% endif %}<br>
+{% endblock %}

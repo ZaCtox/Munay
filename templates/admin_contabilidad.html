@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{% static 'img/Munay_logo.png' %}">
+    <title>Administración Munay</title>
+    <link rel="stylesheet" href="{% static 'css/admin_contabilidad.css' %}">
+</head>
+<body>
+    <div class="header-container">
+        <h1>Administración de Contabilidad - Munay</h1>
+        <a href="{% url 'administracion' %}" class="volver-link">
+            <img src="{% static "img/icon-decorativos/volver.png" %}" alt="Volver" class="volver-icon">
+        </a>
+    </div>
+    <main>
+        <nav class="barra">
+        </nav>
+        <div class="botones-container">
+                    <div class="botones-fila">
+                        <a href="{%url 'ventas' %}" class="boton-cafe">Ver ventas</a>
+                        <a href="{%url 'gastos' %}" class="boton-cafe">Ver Gastos</a>
+                    </div>
+                    <div class="botones-fila">
+                        <a href="{%url 'clientes' %}" class="boton-cafe">Ver Clientes</a>
+                        <a href="{%url 'proveedores' %}" class="boton-cafe">Ver Proveedores</a>
+                    </div>
+                    <div class="botones-fila">
+                        <a href="{%url 'gastos' %}" class="boton-cafe">Productos Vendidos</a>
+                        <a href="{%url 'estadisticas' %}" class="boton-cafe">Estadísticas</a>
+                    </div>
+
+
+        </div>
+    </main>
+</body>
+</html>

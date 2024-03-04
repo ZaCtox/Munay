@@ -1,0 +1,39 @@
+{% extends 'layouts/base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <h1 class="titulo-contactanos">Contáctanos</h1>
+    <p class="texto-contactanos">Puedes contáctarte con nosotros a través de nuestras redes sociales como instagram o facebook,
+        también puedes escribirnos a nuestro correo o directamente
+        agendar tu pedido a través de WhatsApp
+    </p><br>
+    
+    <div class="contacto-container">
+
+        <div class="elementos-contacto">
+            <a href="https://wa.me/56972023761" target="_blank"><img class="img-contacto" src="{% static 'img/icon-decorativos/whatsApp.png' %}" alt="WhatsApp"></a>
+            <h2 class="titulo-opcion-contacto">WhatsApp</h2>
+            <h2><a class="enlace-contacto" href="https://wa.me/56972023761?text=Holaaaa" target="_blank">+56 9 7202 3761</a></h2>
+        </div>
+
+        <div class="elementos-contacto">
+            <a href="https://www.facebook.com/munaydulcenutricion?locale2=ms_MY" target="_blank"><img class="img-contacto" src="{% static 'img/icon-decorativos/facebook.png' %}" alt="WhatsApp"></a>
+            <h2 class="titulo-opcion-contacto">Facebook</h2>
+            <h2><a class="enlace-contacto" href="https://www.facebook.com/munaydulcenutricion?locale2=ms_MY" target="_blank">Munay</a></h2>
+        </div>
+
+        <div class="elementos-contacto">
+            <a href="https://www.instagram.com/munay_dulcenutricion/" target="_blank"><img class="img-contacto" src="{% static 'img/icon-decorativos/instagram.png' %}" alt="WhatsApp"></a>
+            <h2 class="titulo-opcion-contacto">Instagram</h2>
+            <h2><a class="enlace-contacto" href="https://www.instagram.com/munay_dulcenutricion/" target="_blank">@munay_dulcenutricion</a></h2>
+        </div>
+
+        <div class="elementos-contacto">
+            <a href="https://www.google.com/maps/place/Talca,+Maule/@-35.4260086,-71.7362591,12z/data=!3m1!4b1!4m6!3m5!1s0x9665c6a2ac07d07d:0x265657feafdac8b8!8m2!3d-35.4232444!4d-71.6484804!16zL20vMDUzNHFo?entry=ttu" target="_blank"><img class="img-contacto" src="{% static 'img/icon-decorativos/ubicacion.png' %}" alt="WhatsApp"></a>
+        <h2 class="titulo-opcion-contacto">Ubicación</h2>
+        <h2><a class="enlace-contacto" href="https://www.google.com/maps/place/Talca,+Maule/@-35.4260366,-71.653858,13z/data=!3m1!4b1!4m6!3m5!1s0x9665c6a2ac07d07d:0x265657feafdac8b8!8m2!3d-35.4232444!4d-71.6484804!16zL20vMDUzNHFo?entry=ttu" target="_blank">Talca</a></h2>
+        </div>
+    </div><br><br>
+
+{% endblock %}

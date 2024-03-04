@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{% static 'img/Munay_logo.png' %}">
+    <title>Administración Munay</title>
+    <link rel="stylesheet" href="{% static 'css/admin_producto.css' %}">
+    
+
+</head>
+<body>
+
+    <div class="header-container">
+        <h1>Administración del inicio - Munay</h1>
+        <a href="{% url 'administracion' %}" class="volver-link">
+            <img src="{% static "img/icon-decorativos/volver.png" %}" alt="Volver" class="volver-icon">
+        </a>
+    </div>

@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/productos.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" type="image/png" href="{% static 'img/Munay_logo.png' %}">
+    {% block styles %}{% endblock %}
+    <title>Munay</title>
+</head>
+
+<body>
+    <h1 class="titulo">MUNAY DULCE NUTRICIÓN</h1>
+    <h2 class="subtitulo">Bienvenidos a tu rincón saludable 🌱🍰</h2>
+    <a href="{% url 'administracion' %}">administracion</a>
+
+    <div class="barra_principal">
+        <ul>
+            <li><a class="opcion-barra-principal" href="{% url 'index' %}">Inicio</a></li>
+            <li><a class="opcion-barra-principal" href="{% url 'productos' %}">Productos</a></li>
+            <li><a class="opcion-barra-principal" href="{% url 'quienes_somos' %}">¿Quiénes Somos?</a></li>
+            <li><a class="opcion-barra-principal" href="{% url 'contactanos' %}">Contáctanos</a></li>
+        </ul>
+        <ul>
+            <li><a href="{% url 'index' %}"><img src="{% static 'img/Munay_logo.png' %}" alt="Munay Logo"></a></li>
+        </ul>
+        <ul>
+            <li><a href="{% url 'pedido' %}"><img src="{% static 'img/icon-decorativos/carrito-de-compras.png' %}" alt="Carrito de compras"></a>  </li>
+                      
+            {% comment %} <li><a href="https://www.instagram.com/munay_dulcenutricion/" target="_blank"><img src="{% static 'img/instagram.png' %}" alt="Instagram"></a></li>
+            <li><a href="https://www.facebook.com/munaydulcenutricion?locale2=ms_MY" target="_blank"><img src="{% static 'img/facebook.png' %}" alt="Facebook"></a></li> {% endcomment %}
+        </ul>
+    </div>
+
+    <div class="barra_principal mobile-menu">
+        <button id="mobile-menu-toggle" class="mobile-menu-btn">Menu <i class="fas fa-bars"></i></button>
+        <ul class="opciones-barra-principal"> <!-- Agregar el botón y los enlaces dentro de este ul -->
+            <li><a class="opcion-barra-principal" href="{% url 'index' %}">Inicio</a></li>
+            <li><a href="{% url 'productos' %}">Productos</a></li>
+            <li><a href="{% url 'quienes_somos' %}">¿Quiénes Somos?</a></li>
+            <li><a href="{% url 'contactanos' %}">Contáctanos</a></li>
+        </ul>
+        <ul>
+            <li><a href="{% url 'index' %}"><img src="{% static 'img/Munay_logo.png' %}" alt="Munay Logo"></a></li>
+        </ul>
+        <ul>
+            <li><a href="{% url 'pedido' %}"><img src="{% static 'img/icon-decorativos/carrito-de-compras.png' %}" alt="Carrito de compras"></a>  </li>
+        </ul>
+    </div>
+    
+    
+
+    <main> <!-- aquí se hace el extend -->
+        {% block content %}{% endblock %} 
+    </main>
+
+    <footer class="footer">
+        <div class="footer-column">
+            <h3 class="footer-title"><span>MUNAY</span></h3>
+            <p class="footer-texto">
+                REPOSTERÍA DE ANTOJOS SALUDABLES<br>
+                DELIVERY NOCTURNO<br>
+                HORARIO DE ATENCIÓN DE LUNES A DOMINGO<br>HASTA LAS 02:00 AM
+            </p>
+        </div>
+      
+        <div class="footer-column">
+            <h3 class="footer-title">INFORMACIÓN</h3>
+            <p class="footer-texto">
+                SIN AZÚCAR<br>
+                SIN HARINAS REFINADAS<br>
+                SIN GLUTEN<br>
+                VEGAN<br>
+                CACAO 60%
+            </p>
+        </div>
+      
+        <div class="footer-column">
+            <h3 class="footer-title">CONTACTO</h3>
+            <p class="footer-texto">
+                <a class="enlace-contacto-footer" href="https://wa.me/56972023761" target="_blank"><i class="fab fa-whatsapp"></i> +56 9 7202 3761</a>
+                <a class="enlace-contacto-footer" href="mailto:munay.dulcenutricion@gmail.com" target="_blank"><i class="far fa-envelope"></i> munay.dulcenutricion@gmail.com</a>
+                <a class="enlace-contacto-footer" href="https://www.google.com/maps/place/Talca,%20Chile" target="_blank"><i class="fas fa-map-marker-alt"></i> ᴛᴀʟᴄᴀ, ᴄʜɪʟᴇ</a>
+            </p>
+        </div>
+      </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const opcionesBarraPrincipal = document.querySelector('.opciones-barra-principal');
+
+            // Agregar evento de clic al botón del menú móvil
+            mobileMenuBtn.addEventListener('click', function(event) {
+                event.stopPropagation(); // Evita que el evento de clic se propague a otros elementos
+                // Alternar la clase 'active' en la barra de menú móvil
+                opcionesBarraPrincipal.classList.toggle('active');
+            });
+
+            // Agregar evento de clic al documento para cerrar el menú desplegable cuando se haga clic en cualquier otro lugar
+            document.addEventListener('click', function(event) {
+                const target = event.target;
+                const isMenuOpen = opcionesBarraPrincipal.classList.contains('active');
+                // Si el menú está abierto y se hace clic en cualquier otro lugar que no sea el botón del menú
+                if (isMenuOpen && target !== mobileMenuBtn && !opcionesBarraPrincipal.contains(target)) {
+                    // Ocultar el menú desplegable
+                    opcionesBarraPrincipal.classList.remove('active');
+                }
+            });
+        });
+    </script>
+
+    <!-- Bootstrap -->
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

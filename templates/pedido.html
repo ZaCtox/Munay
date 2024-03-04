@@ -1,0 +1,39 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="contenedor-carrito">
+        <h2>Carrito de Compras</h2>
+        <ul>
+            {% for producto_id, producto_info in request.session.carrito.items %}
+                <li>
+                    <span>{{ producto_info.nombre }}</span>
+                    <span>Cantidad: {{ producto_info.cantidad }}</span>
+                    <span>Precio: {{ producto_info.precio_total }}</span>
+                    <img src="{{ producto_info.imagen }}" alt="{{ producto_info.nombre }}">
+                </li>
+            {% endfor %}
+        </ul>
+        <div>
+            <h3>Total: {{ total_carrito }}</h3>
+            <form method="post">
+                {% csrf_token %}
+                <label for="nombre_apellido">Nombre y Apellido:</label>
+                <input type="text" name="nombre_apellido" id="nombre_apellido" required><br><br>
+                <label for="telefono">Teléfono:</label>
+                <input type="text" name="telefono" id="telefono" required><br><br>
+                <label for="forma_entrega">Forma de Entrega:</label>
+                <select name="forma_entrega" id="forma_entrega" required>
+                    <option value="">Seleccione una opción</option>
+                    <option value="Lo retiro personalmente">Lo retiro personalmente</option>
+                    <option value="Necesito que me lo envíen">Necesito que me lo envíen</option>
+                </select><br><br>
+                <button type="submit">Confirmar Pedido</button>
+            </form>
+            <form action="{% url 'limpiar_carrito' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit">Limpiar Carrito</button>
+            </form>
+        </div>
+    </div><br>
+{% endblock %}

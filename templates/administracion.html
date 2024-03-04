@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/administracion.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/Munay_logo.png' %}">
+    <title>Munay</title>
+
+</head>
+<body>
+    <h1 class="titulo">Administración Munay</h1>
+    <main>
+        <nav class="barra">
+            <ul class="nav-links">
+                <li><a href="{% url 'administracion' %}" class="barra-link">Inicio</a></li>
+                <li><a href="{% url 'admin_producto' %}" class="barra-link">Productos</a></li>
+                <li><a href="{% url 'admin_info_inicio' %}" class="barra-link">Información de Inicio</a></li>
+                <li><a href="{% url 'admin_contabilidad' %}" class="barra-link">Contabilidad</a></li>
+                <li><a href="{% url 'index' %}" class="cerrar-sesion barra-link">Cerrar Sesión</a></li>
+            </ul>            
+        </nav>
+    </main>
+
+    <!-- Divisiones para las tres secciones -->
+    <div class="contenedor-secciones">
+        <div class="seccion1">
+            <h2 class="titulo-seccion">Productos</h2>
+            <p class="texto-seccion">
+                En dicha pestaña podrás visualizar los datos de los productos que ya se
+                encuentren ingresados en la base de datos, además de poder agregar nuevos
+                productos.<br><br>
+                Para facilitar la gestión de productos, podrás aumentar y disminuir el stock
+                de cada producto, editar los demas datos y eliminar los productos que ya no
+                quieras vender
+            </p>
+        </div>
+
+        <div class="seccion2">
+            <h2 class="titulo-seccion">Información de Inicio</h2>
+            <p class="texto-seccion">
+                Con la finalidad de tener un inicio más llamativo para los clientes,
+                podrás editar el inicio para poner ofertas, productos especiales de
+                fechas festivas como Navidad o San Valentín.<br><br>
+                Desde el título, imagenes y mensajes para despertar aún más el
+                interés de sus clientes
+            </p>
+        </div>
+
+        <div class="seccion3">
+            <h2 class="titulo-seccion">Contabilidad</h2>
+            <p class="texto-seccion">
+                Aquí podrás ver los datos de los Clientes, Proveedores, Ventas, Gastos, Estadística
+                sobre las ventas y gastos y lista de Productos Vendidos.
+                Además de administrar cada tabla de datos agregando o eliminado
+            </p>
+        </div>
+    </div>
+
+</body>
+</html>
