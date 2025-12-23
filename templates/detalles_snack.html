@@ -1,6 +1,5 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
-
 {% block content %}<br>
     <div class="contenedor-detalle-producto">
         <header>
@@ -11,12 +10,39 @@
             <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
         </div>
         <div class="descripcion-detalle-producto">{{ producto.descripcion }}</div>
-        <div class="precio-detalle-producto">1 Und: $ {{ producto.precio }}</div>
-        {% if precio_2da_unidad < precio_doble %}
-            <div class="precio-detalle-producto">2 Und: $ {{ precio_2da_unidad }}</div>
-        {% endif %}<br>
-
         <form method="post" action="{% url 'agregar_al_carrito' %}" class="agregar-carrito-form">
+            {% csrf_token %}
+            <div>
+                <!-- Mostrar el precio de 1 unidad -->
+                <label for="opcion1">1 Und: </label>
+                <span id="precio_unidad_1">
+                    <script>
+                        var precio_snack_1 = parseFloat("{{ producto.precio }}");
+                        var precio_formateado_1 = "$" + precio_snack_1.toLocaleString();
+                        document.write(precio_formateado_1);
+                    </script>
+                </span>
+                <!-- Fin del precio de 1 unidad -->
+                <input type="radio" id="opcion1" name="opcion" value="{{ producto.precio }}" checked>
+            </div>
+            {% comment %} {% if precio_2da_unidad < precio_doble %} {% endcomment %}
+            {% if producto.descuento_2da_unidad > 0 %}
+            <div>
+                <!-- Mostrar el precio de 2 unidades si aplica descuento -->
+                <label for="opcion2">2 Und: </label>
+                <script>
+                    var precio_snack_dscto = parseFloat("{{ producto.descuento_2da_unidad }}");
+                    var precio_formateado_dscto = "$" + precio_snack_dscto.toLocaleString();
+                    document.write(precio_formateado_dscto);
+                </script>
+                <!-- Fin del precio de 2 unidades -->
+                <input type="radio" id="opcion2" name="opcion" value="{{ producto.descuento_2da_unidad }}">
+            </div>
+            {% endif %}
+            {% comment %} {% endif %} {% endcomment %}
+
+
+            {% comment %} botones que manejan agregar al carrito y cuanto de dicho producto {% endcomment %}
             <div class="contenedor-botones-carrito">
                 {% csrf_token %}
                 <input type="hidden" name="producto_id" value="{{ producto.id }}">
@@ -26,10 +52,15 @@
                     <input type="number" name="cantidad" id="cantidad" value="1" min="1">
                 </div>
                 <div class="boton-der">
-                    <button type="submit" class="boton-agregar-carrito">Agregar al Carrito</button>
+                    {% if sin_stock %}
+                        {% comment %} darle estilos o cambiar class para hacer diferente el boton {% endcomment %}
+                        <button type="button" class="boton-agregar-carrito" disabled>Sin Stock</button>
+                    {% else %}
+                        <button type="submit" class="boton-agregar-carrito">Agregar al Carrito</button>
+                    {% endif %}
                 </div>
             </div>
-        </form>
+        </form>        
     </div><br>
 
     <!-- Script de JavaScript -->
@@ -71,6 +102,21 @@
                 console.error('La cantidad seleccionada no es válida.');
             }
         });    
+    </script>
+
+    <!-- Script para actualizar el precio total dinámicamente -->
+    <script>
+        const selectPrecio = document.getElementById('opcion');
+        const precioTotalSpan = document.getElementById('precio-total');
+
+        selectPrecio.addEventListener('change', () => {
+            const cantidadInput = document.getElementById('cantidad');
+            const cantidad = parseInt(cantidadInput.value);
+            const precioSeleccionado = parseFloat(selectPrecio.value);
+            const precioTotal = cantidad * precioSeleccionado;
+
+            precioTotalSpan.textContent = `$${precioTotal.toFixed(2)}`;
+        });
     </script>
     
 {% endblock %}

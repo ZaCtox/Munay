@@ -15,7 +15,7 @@
     <a href="{% url 'admin_contabilidad' %}" class="volver-link">
         <img src="{% static "img/icon-decorativos/volver.png" %}" alt="Volver" class="volver-icon">
     </a>
-</div><br><br>
+</div>
 
 <!-- mensaje cuando se agrega un producto correctamente -->
 {% if messages %}
@@ -65,6 +65,17 @@
     </form>
 </div>
 
+<!-- Formulario para seleccionar el filtro -->
+<div class="filtro-container">
+    <h2>Buscar Proveedor</h2>
+    <form method="get" class="filtro-form">
+        <input type="text" name="filtro_nombre" placeholder="Nombre del Proveedor" value="{{ filtro_nombre }}">
+        <button type="submit">Buscar</button>
+        {% if filtro_nombre %}
+            <a href="{% url 'proveedores' %}" class="btn-vaciar">Vaciar</a>
+        {% endif %}
+    </form>
+</div>
 
 <!-- Tabla para mostrar todos los proveedores -->
 <div class="container">
@@ -83,13 +94,14 @@
                 <tr>
                     <td>{{ proveedor.rut }}</td>
                     <td>{{ proveedor.nombre }}</td>
-                    <td>{{ proveedor.telefono }}</td>
+                    <td>+56{{ proveedor.telefono }}</td>
                     <td>
                         <!-- Agrega un formulario con un botón para enviar la solicitud de eliminación -->
                         <form action="{% url 'eliminar_proveedor' proveedor.id %}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este proveedor?')">
                             {% csrf_token %}
                             <button type="submit" class="btn-eliminar"> Eliminar</button>
                             <input type="hidden" name="proveedor_id" value="{{ proveedor.id }}">
+                        </form>
                     </td>
                 </tr>
             {% endfor %}
@@ -111,8 +123,8 @@
         }
         return true; // Permitir el envío del formulario si todos los campos están llenos
     }
-</script>
-<script>
+
+
     document.addEventListener("DOMContentLoaded", function() {
         var messageContainer = document.querySelector('.message-container');
     

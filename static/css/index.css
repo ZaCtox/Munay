@@ -21,7 +21,6 @@ div ul li img {
     margin: 0 auto; /* Centra horizontalmente */
 }
 
-
 .titulo {
     text-align: center;
     padding-top: 1rem;
@@ -32,7 +31,6 @@ div ul li img {
     font-family: Georgia, 'Times New Roman', Times, serif;
     text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
 }
-
 
 .subtitulo {
     text-align: center;
@@ -47,23 +45,28 @@ div ul li img {
 .barra_principal {
     background-color: #b88674;
     display: grid; /* Mostrar la barra principal en pantallas grandes */
-    grid-template-columns: 1fr 1.1fr 1fr;
+    grid-template-columns: 1fr 0.1fr 1fr;
     align-items: center;
     justify-items: center;
     font-family: Georgia, 'Times New Roman', Times, serif;
     margin-bottom: 0%;
+    border-top: 1px solid #a37f73;
+    border-bottom: 1px solid #a37f73;
 }
 
-.barra_principal.mobile-menu{
+.barra_principal.mobile-menu {
+    border-top: 1px solid #a37f73;
+    border-bottom: 1px solid #a37f73;
     display: none; /* Mostrar la barra en dispositivos móviles */
 }
 .opcion-barra-principal {
     display: block;
     color: white;
     text-align: center;
-    padding: clamp(11px, 2vw, 10px) clamp(8px, 1.5vw, 3px);
+    padding: clamp(10px, 2vw, 18px);
     text-decoration: none;
     font-size: clamp(10px, 1.5vw, 24px);
+    margin-left: 1rem;
 }
 
 .opcion-barra-principal.active {
@@ -78,14 +81,12 @@ div ul li img {
     border-radius: 7px;
 }
 
-
 div ul {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
 }
-
 
 .footer {
     background-color: rgba(240, 240, 240, clamp(0.5, 1, 1)); /* Utilizando clamp() para definir el canal alfa (transparencia) */
@@ -103,6 +104,7 @@ div ul {
   .footer-title {
     color: #ffffff; /* Color de texto oscuro */
     font-size: clamp(12px, 3vw, 24px); /* Utilizando clamp() para definir el tamaño de fuente del título */
+    font-weight: bold;
 
   }
   
@@ -128,9 +130,6 @@ div ul {
   .footer-texto a:hover {
     color: white; /* Cambia el color del enlace a blanco */
 }
-
-  
-  
 
 /* Media query para dispositivos móviles */
 @media only screen and (max-width: 930px) {
@@ -165,9 +164,6 @@ div ul {
         z-index: 999;
     }
 
-
-
-
     .opciones-barra-principal a:hover {
         color: white; /* Cambia el color del texto al pasar el mouse */
         background-color: #996f60; /* Cambia el color de fondo al pasar el mouse */
@@ -178,7 +174,6 @@ div ul {
     .opciones-barra-principal.show {
         display: block;
     }
-
 
     .opciones-barra-principal.active {
         display: block;
@@ -199,7 +194,6 @@ div ul {
         display: block;
         padding: clamp(10px, 2vw, 14px) clamp(12px, 2vw, 16px); /* Utilizando clamp() para definir el relleno */
     }
-    
     
     .opciones-barra-principal li {
         text-align: center; /* Centrar el texto */
@@ -223,20 +217,36 @@ div ul {
         width: 45%; /* Establece un ancho máximo del 100% para el carrusel */
         overflow: hidden; /* Oculta cualquier contenido que se desborde del carrusel */
     }
-    
+
+}
+.row{
+    --bs-gutter-x: 0;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(-1 * var(--bs-gutter-y));
+    margin-right: calc(-.5 * var(--bs-gutter-x));
+    margin-left: calc(-.5 * var(--bs-gutter-x));
 }
     
-    
-
 /*         aqui EMPIEZA quienes_somos.html****************************************************************          */
 .titulo-quienes-somos {
     text-align: center;
-    margin-top: 0;
     color: #996f60;
+    margin-top: 1%;
     text-decoration: underline;
     text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2); /* Sombra de texto */
 }
 
+.titulo-opcion-contacto, .enlace-contacto {
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 20px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
 
 
 /* Estilos específicos para las imagenes en quienes_somos.html */
@@ -251,6 +261,7 @@ div ul {
     padding: 40px;
     display: flex;
     align-items: center; /* Alinea verticalmente los elementos */
+    flex-direction: column
 }
 
 /* Estilos específicos para el texto al lado derecho de la imagen */
@@ -259,7 +270,7 @@ div ul {
     margin-left: 30px; /* Ajusta el margen según tus preferencias */
     margin-right: 30px;
     text-align: justify;
-    font-size: 23px;
+    font-size: clamp(16px, 2vw, 23px);
     line-height: 1.2;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
@@ -305,18 +316,78 @@ div ul {
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
+@media only screen and (max-width: 930px) {
+    .titulo-quienes-somos {
+        text-align: center;
+        margin-top: 0;
+        color: #996f60;
+        text-decoration: underline;
+        text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .quienes-somos-img {
+        max-width: 100%; /* La imagen se ajustará al ancho del contenedor */
+        height: auto;
+        border-radius: 3%;
+    }
+
+    .contenido {
+        padding: 20px; /* Reducir el padding para dispositivos móviles */
+        display: flex;
+        flex-direction: column; /* Cambiar la dirección de los elementos a vertical */
+        align-items: center;
+    }
+
+    .texto {
+        margin: 0.5rem;
+        text-align: justify;
+        font-size: clamp(14px, 2vw, 18px); /* Ajustar el tamaño de fuente para dispositivos móviles */
+        line-height: 1.2;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+
+    .feria {
+        width: 100%; /* La imagen se ajustará al ancho del contenedor */
+        max-width: 400px; /* Establecer un ancho máximo */
+        height: auto;
+        border-radius: 3%;
+    }
+
+    .contenido-pintado {
+        padding: 20px; /* Reducir el padding para dispositivos móviles */
+        display: flex;
+        flex-direction: column; /* Cambiar la dirección de los elementos a vertical */
+        align-items: center;
+        background-color: rgba(151, 119, 86, 0.3);
+        border-radius: 1%;
+    }
+
+    .titulo-parrafo {
+        color: #b88674;
+        text-align: center;
+    }
+
+    .titulo-subparrafo {
+        color: #996f60;
+        text-align: center;
+        text-decoration: wavy;
+        font-size: 20px; /* Reducir el tamaño de fuente para dispositivos móviles */
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .icon-quines-somos {
+        max-width: 70px; /* Reducir el tamaño de los iconos para dispositivos móviles */
+    }
+}
+
 /*         aqui TERMINA quienes_somos.html****************************************************************          */
-
-
-
-
-
 
 /*         aqui EMPIEZA contactanos.html****************************************************************          */
 .titulo-contactanos {
     text-align: center;
     color: #996f60;
-    margin-top: 0;
+    margin-top: 1%;
     text-decoration: underline;
     max-block-size: clamp(30px, 10vw, 50px); /* Utilizando clamp() para definir el tamaño máximo del bloque */
     font-size: clamp(30px, 5vw, 45px); /* Utilizando clamp() para definir el tamaño de fuente */
@@ -341,7 +412,6 @@ div ul {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-
 .img-contacto {
     max-width: clamp(50px, 10%, 100px); /* Utilizando clamp() para definir el ancho máximo de la imagen */
     height: auto; /* Mantiene la proporción original de la imagen */
@@ -349,6 +419,7 @@ div ul {
 
 .contacto-container {
     display: grid;
+    padding: 1%;
     grid-template-columns: repeat(2, minmax(0, 1fr)); /* Dos columnas de igual tamaño */
     gap: clamp(10px, 2%, 20px); /* Utilizando clamp() para definir el espacio entre columnas y filas */
 }
@@ -379,12 +450,7 @@ div ul {
     border-radius: clamp(3px, 0.5%, 7px); /* Utilizando clamp() para definir el radio de borde */
 }
 
-
 /*         aqui TERMINA contactanos.html****************************************************************          */
-
-
-
-
 
 /*         aqui EMPIEZA el carrousel****************************************************************          */
 
@@ -432,9 +498,6 @@ div ul {
     transform: scale(1.1); /* Aumentar el tamaño en un 10% */
 }
 
-
-
-
 .carousel-container {
     position: relative;
     overflow: hidden;
@@ -458,22 +521,21 @@ div ul {
 
 .btn-ver-productos {
     display: block;
-    width: clamp(150px, 30%, 200px); /* Utilizando clamp() para definir el ancho máximo */
-    background-color: #c0916d; /* Color del botón */
-    color: #fff; /* Color del texto del botón */
+    width: clamp(170px, 26%, 300px);
+    background-color: #c0916d;
+    color: #fff;
     text-align: center;
     text-decoration: none;
     border-radius: 50px;
-    font-size: clamp(22px, 2vw, 30px); /* Utilizando clamp() para definir el tamaño de fuente */
-    padding: clamp(10px, 2vw, 15px) 20px; /* Utilizando clamp() para definir el relleno */
-    position: absolute; /* Establece el posicionamiento absoluto para que el botón pueda posicionarse dentro del contenedor */
-    top: 50%; /* Posiciona el botón en la mitad superior del contenedor */
-    right: 0; /* Ajusta la distancia del botón desde el borde derecho del contenedor */
-    transform: translateY(-50%); /* Centra verticalmente el botón con respecto al contenedor */
-    transform: translateX(50%); /* Centra verticalmente el botón con respecto al contenedor */
-    margin-right: 50%; 
+    font-size: clamp(17px, 4vw, 34px);
+    padding: clamp(8px, 2vw, 15px) 20px;
+    position: absolute;
+    top: 60%;
+    right: 0;
+    transform: translateY(-50%);
+    transform: translateX(50%);
+    margin-right: 50%;
 }
-
 
 .btn-ver-productos:hover {
     background-color: #8d5830; /* Color del botón al pasar el mouse */
@@ -487,7 +549,6 @@ div ul {
     width: 100%; /* La imagen ocupará todo el ancho disponible */
     height: auto; /* Mantendrá la proporción y se adaptará verticalmente */
     display: block; /* Para asegurar que la imagen se muestre como bloque y ocupe todo el ancho disponible */
-
 }
 
 .image-container {
@@ -502,19 +563,18 @@ div ul {
 
 .text-inside-image {
     position: absolute;
-    top: 30%; /* Ajusta la posición vertical del texto */
+    top: 25%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(192, 145, 109, 0.7); /* Color de fondo del texto */
-    color: #ffffff; /* Color del texto */
-    padding: 20px; /* Espaciado interno del texto */
-    border-radius: 10px; /* Borde redondeado */
-    font-size: clamp(20px, 3vw, 30px); /* Tamaño de fuente adaptable */
-    text-align: center; /* Alineación del texto al centro */
-    opacity: 0.9; /* Opacidad del fondo del texto */
-    z-index: 1; /* Asegura que el texto esté sobre la imagen */
+    background-color: rgba(192, 145, 109, 0.7);
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 30px;
+    font-size: clamp(22px, 4vw, 60px);
+    text-align: center;
+    opacity: 0.9;
+    z-index: 1;
 }
-
 
 /* Estilos para dispositivos móviles */
 @media only screen and (max-width: 1278px) {
@@ -527,6 +587,30 @@ div ul {
     .full-width-image{
         border-radius: 23px;
     }
+
+    .text-inside-image {
+        position: absolute;
+        top: 30%;
+        left: 0%;
+        transform: none;
+        background-color: rgba(192, 145, 109, 0.7);
+        color: #ffffff;        
+        border-radius: 30px;
+        padding: 8px 20px; /* Ajusta el espaciado horizontal según sea necesario */
+        text-align: center;
+        opacity: 0.9;
+        z-index: 1;
+    }
+    
+    .text-inside-image p {
+        display: inline-block; /* Muestra los párrafos en la misma línea */
+        margin: 0; /* Elimina el espacio entre los párrafos */
+    }
+    
+
+    .btn-ver-productos {
+        top:75%
+    }
 }
 
 /* Estilos para pantallas más grandes */
@@ -538,4 +622,22 @@ div ul {
     }
 }
 
+.carrito-container {
+    position: relative;
+    display: inline-block;
+}
 
+.cantidad-productos {
+    position: absolute;
+    top: -5px; /* Ajusta según sea necesario para la posición vertical */
+    right: 12px; /* Ajusta según sea necesario para la posición horizontal */
+    background-color: red; /* Color de fondo del contador */
+    color: white; /* Color del texto del contador */
+    border-radius: 50%; /* Ajusta según sea necesario para dar forma circular al fondo */
+    width: 20px; /* Ajusta según sea necesario para el tamaño del contador */
+    height: 20px; /* Ajusta según sea necesario para el tamaño del contador */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px; /* Tamaño de la fuente del contador */
+}

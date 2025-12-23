@@ -6,9 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="{% static 'img/Munay_logo.png' %}">
     <title>Administración Munay</title>
-    <link rel="stylesheet" href="{% static 'css/admin_producto.css' %}">
-    
-
+    <link rel="stylesheet" href="{% static 'css/carrusel.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <!-- Agrega el enlace al archivo CSS de Owl Carousel theme default -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <!-- Agrega el enlace al archivo jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Agrega el enlace al archivo JS de Owl Carousel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <link rel="stylesheet" href="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/assets/owl.theme.default.min.css">
 </head>
 <body>
 
@@ -18,3 +25,263 @@
             <img src="{% static "img/icon-decorativos/volver.png" %}" alt="Volver" class="volver-icon">
         </a>
     </div>
+
+    <!-- mensaje cuando se agrega una venta correctamente -->
+        {% if messages %}
+        <div class="message-container success-message" id="successMessage">
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    <div class="message-success texto-negro">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+    <!-- Formulario para agregar slides -->
+    <div class="container formulario" id="formulario-agregar">
+        <h2>Agregar Slide</h2>
+        <form id="form-agregar-slide" method="post" action="{% url 'guardar_slide' %}" enctype="multipart/form-data" onsubmit="return validarFormulario();">
+            {% csrf_token %}
+            <div class="group">
+                <label for="imagen" class="label">Imagen:</label>
+                <input type="file" id="imagen" name="imagen" class="input">
+            </div>
+            <div class="group">
+                <label for="title" class="label">Título:</label>
+                <input type="text" id="title" name="title" class="input">
+            </div>
+            <div class="group">
+                <label for="content" class="label">Contenido:</label>
+                <textarea id="content" name="content" class="input"></textarea>
+            </div>
+            <div class="group">
+                <label for="producto_id" class="label">Producto:</label>
+                <select id="producto_id" name="producto_id" class="input">
+                    {% for snack in snacks %}
+                        <option value="http://127.0.0.1:8000/detalles_snack/{{ snack.id }}/">{{ snack.nombre }}</option>
+                    {% endfor %}
+                    {% for torta in tortas %}
+                        <option value="http://127.0.0.1:8000/detalles_torta/{{ torta.id }}/">{{ torta.nombre }}</option>
+                    {% endfor %}
+                    <option value="https://www.instagram.com/munay_dulcenutricion/">Instagram</option>
+                    <option value="https://www.facebook.com/munaydulcenutricion?locale2=ms_MY">Facebook</option>
+                    <option value="https://wa.me/56972023761">WhatsApp</option>
+                </select>  
+            </div>       
+
+            <div id="ofertaContainer" style="display: none;">
+                <div class="group">
+                    <label for="oferta" class="label">Oferta:</label>
+                    <input type="text" id="oferta" name="oferta" class="input" placeholder="Ingrese nombre de la oferta">
+                </div>
+            </div>
+
+            <div class="group">
+                <label for="boton_texto" class="label">Texto para Ver:</label>
+                <input type="text" id="boton_texto" name="boton_texto" class="input" value="{{ slide.boton_texto }}">
+            </div>
+                          
+            <button type="submit" class="form-submit">Agregar Slide</button>
+        </form>
+    </div>
+
+
+    {% for slide in slides %}
+    <div class="formulario" id="form-editar-slide-{{ slide.id }}" style="display: none;">
+    <h2>Editar Slide</h2>
+    <form method="post" action="{% url 'editar_slide' slide.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="slide_id" value="{{ slide.id }}">
+        <div class="group">
+            <label for="imagen" class="label">Imagen Actual:</label>
+            <img src="{{ slide.imagen.url }}" alt="Imagen actual" class="current-image small-image">
+        </div>
+        <div class="group">
+            <label for="imagen" class="label">Nueva Imagen:</label>
+            <input type="file" id="imagen" name="imagen" class="input"><br>
+        </div>
+        <div class="group">
+            <label for="title" class="label">Título:</label>
+            <input type="text" id="title" name="title" class="input" value="{{ slide.title }}"><br>
+        </div>
+        <div class="group">
+            <label for="content" class="label">Contenido:</label>
+            <textarea id="content" name="content" class="input">{{ slide.content }}</textarea><br>
+        </div>
+        <div class="group">
+            <label for="producto_id" class="label">Producto:</label>
+            <select id="producto_id" name="producto_id" class="input">
+                {% for snack in snacks %}
+                    <option value="http://127.0.0.1:8000/detalles_snack/{{ snack.id }}/">{{ snack.nombre }}</option>
+                {% endfor %}
+                {% for torta in tortas %}
+                    <option value="http://127.0.0.1:8000/detalles_torta/{{ torta.id }}/">{{ torta.nombre }}</option>
+                {% endfor %}
+                <option value="https://www.instagram.com/munay_dulcenutricion/">Instagram</option>
+                <option value="https://www.facebook.com/munaydulcenutricion?locale2=ms_MY">Facebook</option>
+                <option value="https://wa.me/56972023761">WhatsApp</option>
+            </select>
+        </div>
+
+        <div id="ofertaContainer_editar_{{ slide.id }}">
+            <div class="group">
+                <label for="oferta" class="label">Oferta:</label>
+                <input type="text" id="oferta_{{ slide.id }}" name="oferta" class="input" placeholder="Ingrese nombre de la oferta">
+            </div>
+        </div>
+
+        <div class="group">
+            <label for="boton_texto" class="label">Texto para Ver:</label>
+            <input type="text" id="boton_texto" name="boton_texto" class="input" value="{{ slide.boton_texto }}">
+        </div>
+
+
+
+        <button type="submit" class="form-submit-editar">Guardar Edición</button>
+    </form>
+</div>
+{% endfor %}
+
+    
+    <div id="owl-carousel-container">
+        <div class="row">
+            <div class="large-12 columns">
+                <div class="owl-carousel owl-theme">
+                    {% for slide in slides %}
+                        <div class="item">
+                            <!-- Mover el formulario de eliminación y el botón de edición aquí -->
+                            <form action="{% url 'eliminar_slide' slide.id %}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta slide?')" class="form-eliminar">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-eliminar">Eliminar</button>
+                                <input type="hidden" name="slide_id" value="{{ slide.id }}">
+                            </form>
+                            <button onclick="mostrarFormularioEdicion('{{ slide.id }}')" class="button-editar">Editar</button>
+                            
+                            <img src="{{ slide.imagen.url }}" alt="{{ slide.title }}">
+                            <div class="text">
+                                <h2>{{ slide.title }}</h2>
+                                <p>{{ slide.content }}</p>
+                                {% if 'wa.me' in slide.urls %}
+                                    <a href="{{ slide.urls }}?text=¡Hola! Quiero pedir un box exclusivo para {{ slide.oferta}}" class="btn-below-text">{{ slide.boton_texto }}</a>
+                                {% else %}
+                                    <a href="{{ slide.urls }}" class="btn-below-text">{{ slide.boton_texto }}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+
+
+<!-- Fin del carrusel de slides -->
+<!-- Script para inicializar el carrusel de Owl Carousel -->
+<script src="https://owlcarousel2.github.io/OwlCarousel2/assets/vendors/jquery.min.js"></script>
+<script src="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/owl.carousel.js"></script>
+<script>
+    var owl = $('.owl-carousel');
+    owl.owlCarousel({
+        margin: 10,
+        loop: true,
+        responsive: {
+            0: {
+                items: 1
+            },
+            200: {
+                items: 1
+            }
+        },
+        autoplay: true,
+        autoplayTimeout: 3000,
+        autoplayHoverPause: true,
+        onChanged: function(event) {
+            var currentSlide = event.item.index + 1; // Obtiene el número de la diapositiva actual
+            var currentText = $('.owl-carousel .item:nth-child(' + currentSlide + ') .text').html(); // Obtiene el texto de la diapositiva actual
+            $('.text-container').html(currentText); // Actualiza el texto en el contenedor
+        }
+    });
+
+    // Función para mostrar el formulario de edición y ocultar el de agregar
+    function mostrarFormularioEdicion(slideId) {
+        var formId = 'form-editar-slide-' + slideId;
+        $('#formulario-agregar').hide(); // Oculta el formulario de agregar
+        $('#' + formId).show(); // Muestra el formulario de edición correspondiente
+    }
+
+    function validarFormulario() {
+            var imagen = document.getElementById('imagen').value;
+            var title = document.getElementById('title').value;
+            var content = document.getElementById('content').value;
+            var producto_id = document.getElementById('producto_id').value;
+            var boton_texto = document.getElementById('boton_texto').value;
+
+            if (imagen === '' || title === '' || content === '' || producto_id === '' || boton_texto === '') {
+                alert('Por favor, completa todos los campos.');
+                return false;
+            }
+
+            return true;
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var messageContainer = document.querySelector('.message-container');
+    
+            if (messageContainer) {
+                messageContainer.style.opacity = '1';
+    
+                var fadeOutInterval = setInterval(function() {
+                    messageContainer.style.opacity -= 0.1;
+                    if (messageContainer.style.opacity <= 0) {
+                        clearInterval(fadeOutInterval);
+                        messageContainer.style.display = 'none';
+                    }
+                }, 100);
+    
+                var animationDuration = 2000;
+                setTimeout(function() {
+                    clearInterval(fadeOutInterval);
+                    messageContainer.style.display = 'none';
+                }, animationDuration);
+            }
+        });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var productoSelect = document.getElementById("producto_id");
+        var ofertaContainer = document.getElementById("ofertaContainer");
+
+        productoSelect.addEventListener("change", function() {
+            if (productoSelect.value === "https://wa.me/56972023761") {
+                ofertaContainer.style.display = "block";
+            } else {
+                ofertaContainer.style.display = "none";
+            }
+        });
+    });
+
+
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var productoSelectEditar = document.getElementById("producto_id_editar");
+        var ofertaContainerEditar = document.getElementById("ofertaContainer_editar");
+
+        productoSelectEditar.addEventListener("change", function() {
+            if (productoSelectEditar.value === "https://wa.me/56972023761") {
+                ofertaContainerEditar.style.display = "block";
+            } else {
+                ofertaContainerEditar.style.display = "none";
+            }
+        });
+    });
+</script>
+
+
+
+</body>
+</html>

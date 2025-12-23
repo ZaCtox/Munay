@@ -3,14 +3,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {% block content %}
     <h2>Categorias</h2>
-    <div class="botones-container">
+    <div class="container text-center">
         <form method="GET" action="{% url 'productos' %}">
-            <button type="submit" name="category" value="Snack">
-                <img src="{% static 'img/snacks.png' %}" alt="Snack" class="imagen-filtro">
-            </button>
-            <button type="submit" name="category" value="Torta">
-                <img src="{% static 'img/tortas.png' %}" alt="Torta" class="imagen-filtro">
-            </button>
+            <div class="row">
+                <div class="col-6">
+                    <div class="product-wrapper">
+                        <button class="prod-btn" type="submit" name="category" value="Snack">
+                            <img src="{% static 'img/snacks.png' %}" alt="Snack" class="imagen-filtro">
+                            <p class="product-label">SNACKS</p>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="product-wrapper">
+                        <button class="prod-btn" type="submit" name="category" value="Torta">
+                            <img src="{% static 'img/tortas.jpeg' %}" alt="Torta" class="imagen-filtro">
+                            <p class="product-label">TORTAS</p>
+                        </button>
+                    </div>
+                </div>                              
+            </div>
         </form>
     </div>
 
@@ -28,40 +40,55 @@
 
     <!-- Productos -->
     {% if snacks %}
-    <h2>Snacks</h2>
-    <div id="snackProducts" class="product-container">
-        {% for snack in snacks %}
-            <a href="{% url 'detalles_snack' snack.id %}" class="producto-link">
-                <div class="producto">
-                    <div class="producto-imagen">
-                        <img src="{{ snack.imagen.url }}" alt="{{ snack.nombre }}">
+        <h2>Snacks</h2>
+        <div id="snackProducts" class="product-container">
+            {% for snack in snacks %}
+                <a href="{% url 'detalles_snack' snack.id %}" class="producto-link">
+                    <div class="producto">
+                        <div class="producto-imagen {% if snack.stock <= 0 %} sin-stock {% endif %}">
+                            <img src="{{ snack.imagen.url }}" alt="{{ snack.nombre }}" {% if snack.stock <= 0 %}class="blur"{% endif %}>
+                            {% if snack.stock <= 0 %}
+                                <div class="sin-stock-text">Sin Stock</div>
+                            {% endif %}
+                        </div>
+                        <div class="producto-info">
+                            <div class="producto-nombre">{{ snack.nombre }}</div>
+                            <div class="producto-precio"><script>
+                                var precio_snack = parseFloat("{{ snack.precio }}");
+                                var precio_formateado = "$" + precio_snack.toLocaleString();
+                                document.write(precio_formateado);
+                            </script></div>
+                        </div>
                     </div>
-                    <div class="producto-info">
-                        <div class="producto-nombre">{{ snack.nombre }}</div>
-                        <div class="producto-precio">$ {{ snack.precio }}</div>
-                    </div>
-                </div>
-            </a>
-        {% endfor %}
-    </div>
+                </a>
+            {% endfor %}
+        </div>
     {% endif %}
 
     {% if tortas %}
-    <br><h2>Tortas</h2>
-    <div id="tortaProducts" class="product-container">
-        {% for torta in tortas %}
-            <a href="{% url 'detalles_torta' torta.id %}" class="producto-link">
-                <div class="producto">
-                    <div class="producto-imagen">
-                        <img src="{{ torta.imagen.url }}" alt="{{ torta.nombre }}">
+        <br><h2>Tortas</h2>
+        <div id="tortaProducts" class="product-container">
+            {% for torta in tortas %}
+                <a href="{% url 'detalles_torta' torta.id %}" class="producto-link">
+                    <div class="producto">
+                        <div class="producto-imagen {% if torta.stock <= 0 %} sin-stock {% endif %}">
+                            <img src="{{ torta.imagen.url }}" alt="{{ torta.nombre }}" {% if torta.stock <= 0 %}class="blur"{% endif %}>
+                            {% if torta.stock <= 0 %}
+                                <div class="sin-stock-text">Sin Stock</div>
+                            {% endif %}
+                        </div>
+                        <div class="producto-info">
+                            <div class="producto-nombre">{{ torta.nombre }}</div>
+                            <div class="producto-precio"><script>
+                                var precio_torta = parseFloat("{{ torta.precio }}");
+                                var precio_formateado = "$" + precio_torta.toLocaleString();
+                                document.write(precio_formateado);
+                            </script></div>
+                        </div>
                     </div>
-                    <div class="producto-info">
-                        <div class="producto-nombre">{{ torta.nombre }}</div>
-                        <div class="producto-precio">$ {{ torta.precio }}</div>
-                    </div>
-                </div>
-            </a>
-        {% endfor %}
-    </div>
-    {% endif %}<br>
+                </a>
+            {% endfor %}
+        </div>
+    {% endif %}
+
 {% endblock %}

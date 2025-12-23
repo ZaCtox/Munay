@@ -4,19 +4,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalles de Venta</title>
+    <title>Administración Munay</title>
     <link rel="stylesheet" href="{% static 'css/admin_contabilidad.css' %}">
     <link rel="icon" type="image/png" href="{% static 'img/Munay_logo.png' %}">
 </head>
 <body>
+    <div class="header-container">
+        <h1>Administración de Productos Vendidos - Munay</h1>
+        <a href="{% url 'admin_contabilidad' %}" class="volver-link">
+            <img src="{% static "img/icon-decorativos/volver.png" %}" alt="Volver" class="volver-icon">
+        </a>
+    </div>
+    <!-- Formulario para seleccionar el filtro -->
+    <div class="filtro-container">
+        <form method="get" onchange="this.submit()" class="filtro-form">
+            <label for="filtro" class="filtro-label">Filtrar:</label>
+            <select name="filtro" id="filtro" class="filtro-select">
+                <option value="diario" {% if filtro == 'diario' %} selected {% endif %}>Diario</option>
+                <option value="semanal" {% if filtro == 'semanal' %} selected {% endif %}>Semanal</option>
+                <option value="mensual" {% if filtro == 'mensual' %} selected {% endif %}>Mensual</option>
+            </select>
+        </form>
+    </div>
 
-<div class="header-container">
-    <h1>Detalles de Venta</h1>
-</div>
+    <div class="fecha-container">
+        <span class="fecha-label">Fecha de Inicio:</span>
+        <span class="fecha-value">{{ fecha_inicio|date:"d/m/Y" }}</span>
+    </div>
+    <div class="fecha-container">
+        <span class="fecha-label">Fecha de Fin:</span>
+        <span class="fecha-value">{{ fecha_fin|date:"d/m/Y" }}</span>
+    </div>
+    <div class="container">
+        <h2>Productos Vendidos</h2>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                <th>Nombre del Producto</th>
+                <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for detalle in detalles_venta %}
+                <tr>
+                    <td>{{ detalle.producto.nombre }}</td>
+                    <td>{{ detalle.cantidad }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-<div class="container">
-    <p>Esta es la página de detalles de venta. Aquí podrías mostrar información sobre la venta.</p>
-</div>
+    <script>
+        // Crear un objeto para almacenar las cantidades por nombre
+        var cantidadesPorNombre = {};
+
+        // Iterar sobre las filas de la tabla para sumar las cantidades por nombre
+        var filas = document.querySelectorAll('.styled-table tbody tr');
+        filas.forEach(function (fila) {
+            var nombreProducto = fila.querySelector('td:first-child').innerText;
+            var cantidad = parseInt(fila.querySelector('td:nth-child(2)').innerText);
+
+            if (cantidadesPorNombre[nombreProducto]) {
+                cantidadesPorNombre[nombreProducto] += cantidad;
+            } else {
+                cantidadesPorNombre[nombreProducto] = cantidad;
+            }
+        });
+
+        // Limpiar el cuerpo de la tabla
+        var tablaCuerpo = document.querySelector('.styled-table tbody');
+        tablaCuerpo.innerHTML = '';
+        // Mostrar las sumas en la tabla
+        for (var nombreProducto in cantidadesPorNombre) {
+            var fila = document.createElement('tr');
+            fila.innerHTML = '<td><strong>' + nombreProducto + '</strong></td>' +
+                '<td><strong>' + cantidadesPorNombre[nombreProducto] + '</strong></td>';
+            tablaCuerpo.appendChild(fila);
+        }
+
+    </script>
 
 </body>
 </html>

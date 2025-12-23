@@ -15,12 +15,15 @@ class Carrito:
             self.carrito[id] = {
                 "producto_id": producto.id,
                 "nombre": producto.nombre,
-                "acumulado": producto.acumulado,
                 "cantidad": 1,
             }
         else:
+            # Verifica si la clave 'acumulado' existe antes de sumar el precio
+            if 'acumulado' not in self.carrito[id]:
+                self.carrito[id]["acumulado"] = producto.precio
+            else:
+                self.carrito[id]["acumulado"] += producto.precio
             self.carrito[id]["cantidad"] += 1
-            self.carrito[id]["acumulado"] += producto.precio
         self.guardar_carrito()
 
     def guardar_carrito(self):
@@ -37,7 +40,12 @@ class Carrito:
         id = str(producto.id)
         if id in self.carrito.keys():
             self.carrito[id]["cantidad"] -= 1
-            self.carrito[id]["acumulado"] -= producto.precio
+            # Verifica si la clave 'acumulado' existe antes de restar el precio
+            if 'acumulado' in self.carrito[id]:
+                self.carrito[id]["acumulado"] -= producto.precio
+            else:
+                # Si no existe, simplemente resta el precio del producto
+                self.carrito[id]["acumulado"] = producto.precio
             if self.carrito[id]["cantidad"] <= 0:
                 self.eliminar(producto)
             self.guardar_carrito()
@@ -45,3 +53,9 @@ class Carrito:
     def limpiar(self):
         self.session["carrito"] = {}
         self.session.modified = True
+    
+    def eliminar(self, producto):
+        id = str(producto.id)
+        if id in self.carrito:
+            self.carrito.pop(id) # Utiliza el método pop para eliminar el producto del diccionario
+            self.guardar_carrito()

@@ -28,12 +28,14 @@
                         <a href="{%url 'proveedores' %}" class="boton-cafe">Ver Proveedores</a>
                     </div>
                     <div class="botones-fila">
-                        <a href="{%url 'gastos' %}" class="boton-cafe">Productos Vendidos</a>
+                        <a href="{%url 'productos_vendidos' %}" class="boton-cafe">Productos Vendidos</a>
                         <a href="{%url 'estadisticas' %}" class="boton-cafe">Estadísticas</a>
                     </div>
 
-
-        </div>
+                    <div class="botones-fila">
+                        <a href="{% url 'precios_sector' %}" class="boton-cafe">Agregar Sectores</a>
+                    </div>
+        </div>      
     </main>
 </body>
 </html>

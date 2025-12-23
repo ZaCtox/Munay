@@ -1,39 +1,214 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
-
 {% block content %}
-    <div class="contenedor-carrito">
-        <h2>Carrito de Compras</h2>
-        <ul>
-            {% for producto_id, producto_info in request.session.carrito.items %}
-                <li>
-                    <span>{{ producto_info.nombre }}</span>
-                    <span>Cantidad: {{ producto_info.cantidad }}</span>
-                    <span>Precio: {{ producto_info.precio_total }}</span>
-                    <img src="{{ producto_info.imagen }}" alt="{{ producto_info.nombre }}">
-                </li>
-            {% endfor %}
-        </ul>
-        <div>
-            <h3>Total: {{ total_carrito }}</h3>
-            <form method="post">
-                {% csrf_token %}
+<div id="carrito-container" class="contenedor-carrito">
+    <h2>Carrito de Compras</h2>
+    <ul class="lista-pedidos">
+        {% for producto_id, producto_info in request.session.carrito.items %}
+            <li class="carrito-producto">
+                <span class="info">{{ producto_info.nombre }}</span>
+                <span class="info">Cantidad: {{ producto_info.cantidad }}</span>
+                <span class="precio">Precio: <script>
+                    var producto_info = parseFloat("{{ producto_info.precio_total }}");
+                    var precio_formateado = "$" + producto_info.toLocaleString();
+                    document.write(precio_formateado);
+                </script></span>
+                <img src="{{ producto_info.imagen }}" alt="{{ producto_info.nombre }}" style="padding: 2px;">
+
+                {% comment %} <div class="carrito-botones">
+                    <form action="{% url 'eliminar_producto_carrito' producto_id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="eliminar-btn">Eliminar</button>
+                    </form>
+                    <form action="{% url 'sumar_stock_carrito' producto_id %}" method="post" class="botones-stock">
+                        {% csrf_token %}
+                        <button type="submit">+</button>
+                    </form>
+                    <form action="{% url 'restar_stock_carrito' producto_id %}" method="post" class="botones-stock">
+                        {% csrf_token %}
+                        <button type="submit">-</button>
+                    </form>
+                </div> {% endcomment %}
+            </li>
+            {% if forloop.counter|divisibleby:4 and not forloop.last %}
+                <div class="clearfix"></div>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
+            
+    <div id="formulario-container" class="contenedor-central">
+        <h3>Total: ${{ total_carrito }}</h3>
+        <form method="post" class="pedido-form">
+            {% csrf_token %}
+            <div class="form-group">
                 <label for="nombre_apellido">Nombre y Apellido:</label>
-                <input type="text" name="nombre_apellido" id="nombre_apellido" required><br><br>
+                <input type="text" name="nombre_apellido" id="nombre_apellido" required>
+            </div>
+
+            <div class="form-group">
                 <label for="telefono">Teléfono:</label>
-                <input type="text" name="telefono" id="telefono" required><br><br>
-                <label for="forma_entrega">Forma de Entrega:</label>
-                <select name="forma_entrega" id="forma_entrega" required>
-                    <option value="">Seleccione una opción</option>
-                    <option value="Lo retiro personalmente">Lo retiro personalmente</option>
-                    <option value="Necesito que me lo envíen">Necesito que me lo envíen</option>
-                </select><br><br>
-                <button type="submit">Confirmar Pedido</button>
-            </form>
-            <form action="{% url 'limpiar_carrito' %}" method="post" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit">Limpiar Carrito</button>
-            </form>
-        </div>
+                <input type="text" name="telefono" id="telefono" required>
+            </div>
+
+            <div class="form-group">
+                <label>Forma de Entrega:</label>
+                <div class="botones-entrega">
+                    <button type="button" id="retiro-personal" class="btn-entrega" value="Lo retiro personalmente" onclick="seleccionarEntrega(this)">Lo retiro personalmente</button>
+                    <button type="button" id="envio" class="btn-entrega" value="Necesito que me lo envíen" onclick="seleccionarEntrega(this)">Necesito que me lo envíen</button>                            
+                    <input type="hidden" name="forma_entrega" id="forma_entrega" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Forma de Pago:</label>
+                <div class="botones-pago">
+                    <button type="button" id="efectivo" class="btn-pago" value="Efectivo" onclick="seleccionarPago(this)">Efectivo</button>
+                    <button type="button" id="transferencia" class="btn-pago" value="Transferencia Bancaria" onclick="seleccionarPago(this)">Transferencia Bancaria</button>
+                    <button type="button" id="tarjeta" class="btn-pago" value="Tarjeta Débito/Crédito" onclick="seleccionarPago(this)">Tarjeta Débito/Crédito</button>
+                    <input type="hidden" name="forma_pago" id="forma_pago" required>
+                </div>
+            </div>
+
+            <div id="campos_adicionales" style="display: none;">
+                <div class="form-group">
+                    <label for="sector">Sector:</label>
+                    <select name="sector" id="sector">
+                        {% for costo_sector in costos_sectores %}
+                            <!-- Generar opciones dinámicamente desde costos_sectores -->
+                            <option value="{{ costo_sector.nombre }}" data-precio="{{ costo_sector.costo }}">{{ costo_sector.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <span>Se agregará un cobro por envío según el sector seleccionado.</span><br><br>
+
+                <div class="form-group">
+                    <label for="direccion">Dirección (calle y número):</label>
+                    <input type="text" name="direccion" id="direccion">
+                </div>
+
+                <input type="checkbox" name="es_departamento" id="es_departamento">
+                <label for="es_departamento">Es un departamento</label>
+                <div class="form-group">
+                    <div id="piso_departamento" style="display: none;">
+                        <label for="piso">Piso / Departamento:</label>
+                        <input type="text" name="numero_departamento" id="piso">                        
+                    </div>
+                </div>        
+            </div>             
+            <!-- Fin campos adicionales -->
+            <button type="submit" class="confirmar-btn">Confirmar Pedido</button>
+        </form>
+
+        <form action="{% url 'limpiar_carrito' %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="limpiar-btn">Limpiar Carrito</button>
+        </form>
     </div><br>
+
+    <script>
+        // Función para verificar si el dispositivo es un celular
+        function esCelular() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+
+        // Función para cambiar el orden de los elementos en dispositivos móviles
+        function cambiarOrden() {
+            if (esCelular()) {
+                var carritoContainer = document.getElementById('carrito-container');
+                var formularioContainer = document.getElementById('formulario-container');
+                if (carritoContainer && formularioContainer) {
+                    carritoContainer.parentNode.insertBefore(formularioContainer, carritoContainer);
+                }
+            }
+        }
+
+        // Llamar a la función al cargar la página
+        window.onload = cambiarOrden;
+    </script>
+
+    <script>
+        // Obtener el precio total del carrito del contexto de Django y convertirlo a número
+        var totalCarrito = parseFloat("{{ total_carrito }}");
+
+        // Redondear hacia abajo el precio total para convertirlo a un número entero
+        var totalCarritoEntero = Math.floor(totalCarrito);
+        
+        // Mostrar el precio total como un número entero sin decimales
+        document.getElementById('total_carrito').textContent = totalCarritoEntero.toLocaleString();
+    </script>
+
+    <script>
+        document.querySelectorAll('.btn-entrega').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var formaEntregaInput = document.getElementById('forma_entrega');
+                var camposAdicionales = document.getElementById('campos_adicionales');
+                var pisoDepartamento = document.getElementById('piso_departamento');
+
+                formaEntregaInput.value = this.value;
+
+                if (this.value === 'Necesito que me lo envíen') {
+                    camposAdicionales.style.display = 'block';
+
+                    document.getElementById('es_departamento').addEventListener('change', function() {
+                        pisoDepartamento.style.display = this.checked ? 'block' : 'none';
+                    });
+                } else {
+                    camposAdicionales.style.display = 'none';
+                    pisoDepartamento.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+    <script>
+        function seleccionarEntrega(elemento) {
+            var botonesEntrega = document.querySelectorAll('.btn-entrega');
+            botonesEntrega.forEach(function(btn) {
+                btn.style.backgroundColor = ''; // Restablecer color de fondo de todos los botones
+                btn.style.color = ''; // Restablecer color de texto de todos los botones
+            });
+            elemento.style.backgroundColor = '#21243d'; // Cambiar color de fondo del botón seleccionado
+            elemento.style.color = '#ffffff'; // Cambiar color de texto del botón seleccionado a blanco
+        }
+    </script>
+
+    <script>
+        function seleccionarPago(elemento) {
+            var botonesPago = document.querySelectorAll('.btn-pago');
+            botonesPago.forEach(function(btn) {
+                btn.style.backgroundColor = ''; // Restablecer color de fondo de todos los botones
+                btn.style.color = ''; // Restablecer color de texto de todos los botones
+            });
+            elemento.style.backgroundColor = '#21243d'; // Cambiar color de fondo del botón seleccionado
+            elemento.style.color = '#ffffff'; // Cambiar color de texto del botón seleccionado a blanco
+            document.getElementById('forma_pago').value = elemento.value; // Establecer el valor seleccionado en el campo oculto
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Obtener la lista de productos en el carrito
+            var listaProductos = document.querySelectorAll('.carrito-producto');
+            // Obtener el botón de confirmar pedido
+            var confirmarBtn = document.querySelector('.confirmar-btn');
+    
+            // Verificar si la lista de productos está vacía
+            if (listaProductos.length === 0) {
+                // Si está vacía, deshabilitar el botón de confirmar pedido
+                confirmarBtn.disabled = true;
+            }
+    
+            // Agregar un evento al botón de confirmar pedido para verificar nuevamente antes de enviar el formulario
+            confirmarBtn.addEventListener('click', function(event) {
+                // Verificar si la lista de productos sigue estando vacía al momento de hacer clic en el botón
+                if (listaProductos.length === 0) {
+                    // Evitar que se envíe el formulario si la lista de productos está vacía
+                    event.preventDefault();
+                    alert('No puedes confirmar el pedido porque no hay productos en el carrito.');
+                }
+            });
+        });
+    </script>
+    
+
 {% endblock %}

@@ -1,5 +1,9 @@
+* {
+    font-family: Lato, "sans-serif", Roboto, RobotoFallback, Helvetica, Arial, sans-serif;;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: Lato, "sans-serif", Roboto, RobotoFallback, Helvetica, Arial, sans-serif;;
     margin: 0;
     padding: 0;
 }
@@ -7,7 +11,7 @@ body {
 .header-container {
     display: flex;
     align-items: center; /* Centra verticalmente los elementos */
-    background-color: #D98359; /* Color de fondo */
+    background-color: #b88674; /* Color de fondo */
     padding: 20px; /* Añade un espacio alrededor del texto */
     text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4); /* Sombra de texto */
 }
@@ -21,15 +25,11 @@ h1 {
     margin: 0; /* Elimina el margen */
 }
 
-
 .volver-icon {
     width: clamp(40px, 10vw, 60px); /* Utilizando clamp() para definir el tamaño del ícono */
     height: auto; /* Permite que la altura se ajuste automáticamente según el ancho */
     cursor: pointer; /* Cambia el cursor al pasar sobre el ícono */
 }
-
-
-
 
 /* aqui empieza el diseño del contenedor de cada producto */
 .productos-container {
@@ -62,15 +62,16 @@ h1 {
 
 
 .producto-imagen {
-    width: 300px;
-    height: auto;
+    width: calc(300px * 0.75); /* Calcula el ancho deseado */
+    height: 300px; /* Altura fija */
     margin-right: 20px;
-}
-
-.producto-imagen img {
+  }
+  
+  .producto-imagen img {
     width: 100%;
-    height: auto;
-}
+    height: 100%;
+  }
+  
 
 .producto-datos {
     width: 33.33%;
@@ -100,7 +101,6 @@ h1 {
     width: 30px;
     height: auto;
 }
-
 
 .formulario-container {
     max-width: 1700px;
@@ -136,18 +136,21 @@ h1 {
     }
 
     .producto-imagen {
+        width: calc(100% - 140px); /* Reducir el ancho máximo en dispositivos móviles */
         margin-right: 0; /* Eliminar el margen derecho en dispositivos móviles */
-    }
-
-    .producto-imagen img {
-        width: 90%; /* Establecer el ancho completo de la imagen en dispositivos móviles */
+        height: auto;
+      }
+    
+      .producto-imagen img {
+        width: calc(100% - 20px); /* Establecer el ancho completo de la imagen menos el margen derecho */
         height: auto; /* Mantener la proporción de la imagen */
-    }
+      }
 
     .producto-datos,
     .producto-stock-precio {
-        width: 90%; /* Establecer el ancho completo en dispositivos móviles */
+        width: calc(100% - 140px); /* Reducir el ancho máximo en dispositivos móviles */
         padding-right: 0; /* Eliminar el relleno derecho en dispositivos móviles */
+        margin-right: 0; /* Eliminar el margen derecho en dispositivos móviles */
     }
 
     .botones {
@@ -204,12 +207,6 @@ h1 {
 #imagen {
     background-color: #ffffff; /* Cambiar el color de fondo según tu preferencia */
 }
-/* para el agregar imagen que se ve raro
-.form-group-imagen {
-    background-color: #ffffff;
-    border-radius: 10px;
-    margin-top: 10px;
-}*/
 
 /* estilos para el boton de agregar producto */
 .form-submit {
@@ -245,7 +242,6 @@ h1 {
 .form-submit:active {
     transform: scale(0.9);
 }
-
 
 /* Estilos para el título del formulario editar producto */
 #titulo-editar-producto, #titulo-editar-torta {

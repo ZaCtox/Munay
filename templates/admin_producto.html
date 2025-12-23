@@ -34,7 +34,7 @@
                 <label for="precio" class="label">Precio:</label>
                 <input type="number" class="input" id="precio" name="precio" value="{{ snack.precio }}"><br><br>
 
-                <label for="descuento_2da_unidad" class="label">Descuento en Segunda Unidad:</label>
+                <label for="descuento_2da_unidad" class="label">Precio Oferta por 2 Unidades (si no hay oferta poner un 0):</label>
                 <input type="number" class="input" id="descuento_2da_unidad" name="descuento_2da_unidad" value="{{ snack.descuento_2da_unidad }}"><br><br>
                 
                 <label for="stock" class="label">Stock:</label>
@@ -63,13 +63,13 @@
                 <label for="descripcion" class="label">Descripción:</label>
                 <input type="text" class="input" id="descripcion" name="descripcion" value="{{ torta.descripcion }}"><br><br>
     
-                <label for="precio" class="label">Precio:</label>
+                <label for="precio" class="label">Precio 7 Personas:</label>
                 <input type="number" class="input" id="precio" name="precio" value="{{ torta.precio }}"><br><br>
     
-                <label for="precio_15p" class="label">Precio 15p:</label>
+                <label for="precio_15p" class="label">Precio 15 Personas:</label>
                 <input type="number" class="input" id="precio_15p" name="precio_15p" value="{{ torta.precio_15p }}"><br><br>
     
-                <label for="precio_24p" class="label">Precio 24p:</label>
+                <label for="precio_24p" class="label">Precio 24 Personas:</label>
                 <input type="number" class="input" id="precio_24p" name="precio_24p" value="{{ torta.precio_24p }}"><br><br>
                 
                 <label for="stock" class="label">Stock:</label>
@@ -105,7 +105,7 @@
                 <label for="precio" class="label">Precio</label>
                 <input type="number" id="precio" name="precio" class="input" required><br>
     
-                <label for="descuento_2da_unidad" class="label">Descuento en Segunda Unidad</label>
+                <label for="descuento_2da_unidad" class="label">Precio Oferta por 2 Unidades (si no hay oferta poner un 0):</label>
                 <input type="number" id="descuento_2da_unidad" name="descuento_2da_unidad" class="input" required><br>
     
                 <label for="stock" class="label">Stock</label>
@@ -133,13 +133,13 @@
                 <label for="descripcion" class="label">Descripción</label>
                 <input id="descripcion" name="descripcion" class="input" required></input><br>
     
-                <label for="precio" class="label">Precio</label>
+                <label for="precio" class="label">Precio 7 Personas</label>
                 <input type="number" id="precio" name="precio" class="input" required><br>
     
-                <label for="precio_15p" class="label">Precio 15p</label>
+                <label for="precio_15p" class="label">Precio 15 Personas</label>
                 <input type="number" id="precio_15p" name="precio_15p" class="input" required><br>
     
-                <label for="precio_24p" class="label">Precio 24p</label>
+                <label for="precio_24p" class="label">Precio 24 Personas</label>
                 <input type="number" id="precio_24p" name="precio_24p" class="input" required><br>
     
                 <label for="stock" class="label">Stock</label>
@@ -173,8 +173,16 @@
                     <strong>Descripción:</strong> {{ snack.descripcion }}<br><br>
                 </div>
                 <div class="producto-stock-precio">
-                    <strong>Precio:</strong> ${{ snack.precio }}<br><br>
-                    <strong>Descuento ($) en<br>la 2da Unidad:</strong> {{ snack.descuento_2da_unidad }}<br><br>
+                    <strong>Precio:</strong> <script>
+                        var precio_snack = parseFloat("{{ snack.precio }}");
+                        var precio_formateado = "$" + precio_snack.toLocaleString();
+                        document.write(precio_formateado);
+                    </script><br><br>
+                    <strong>Descuento ($) en<br>la 2da Unidad:</strong> <script>
+                        var precio_snack = parseFloat("{{ snack.descuento_2da_unidad }}");
+                        var precio_formateado = "$" + precio_snack.toLocaleString();
+                        document.write(precio_formateado);
+                    </script><br><br>
                     <strong>Stock:</strong> {{ snack.stock }}<br>
                 </div>
 
@@ -214,9 +222,21 @@
                     <strong>Descripción:</strong> {{ torta.descripcion }}<br>
                 </div>
                 <div class="producto-stock-precio">
-                    <strong>Precio 7p:</strong> ${{ torta.precio }}<br><br>
-                    <strong>Precio 15p:</strong> ${{ torta.precio_15p }}<br><br>
-                    <strong>Precio 24p:</strong> ${{ torta.precio_24p }}<br><br>
+                    <strong>Precio 7p:</strong><script>
+                        var precio_snack = parseFloat("{{ torta.precio }}");
+                        var precio_formateado = "$" + precio_snack.toLocaleString();
+                        document.write(precio_formateado);
+                    </script><br><br>
+                    <strong>Precio 15p:</strong><script>
+                        var precio_snack = parseFloat("{{ torta.precio_15p }}");
+                        var precio_formateado = "$" + precio_snack.toLocaleString();
+                        document.write(precio_formateado);
+                    </script><br><br>
+                    <strong>Precio 24p:</strong><script>
+                        var precio_snack = parseFloat("{{ torta.precio_24p }}");
+                        var precio_formateado = "$" + precio_snack.toLocaleString();
+                        document.write(precio_formateado);
+                    </script><br><br>
                     <strong>Stock:</strong> {{ torta.stock }}<br>
                 </div>
 

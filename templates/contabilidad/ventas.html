@@ -15,7 +15,6 @@
             <img src="{% static "img/icon-decorativos/volver.png" %}" alt="Volver" class="volver-icon">
         </a>
     </div>
-    <br><br>
 
     <!-- mensaje cuando se agrega una venta correctamente -->
     {% if messages %}
@@ -50,6 +49,18 @@
                     <option value="Tarjeta Crédito/Débito">Tarjeta Crédito/Débito</option>
                 </select>
             </div>
+
+            <div class="group">
+                <label for="costo_sectorR" class="label">Costo Sector: </label>
+                <select id="costo_sectorR" name="costo_sectorR" class="input">
+                    <option value="0">Sin Envío</option>
+                    {% for costo_sector in costos_sectores %}
+                        <!-- Cambia el value para enviar el costo directamente -->
+                        <option value="{{ costo_sector.costo }}">{{ costo_sector.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
             <div class="group">
                 <label for="montoR" class="label">Monto Total: </label>
                 <input id="montoR" type="number" name="montoR" class="input" readonly>
@@ -59,28 +70,42 @@
                 <ul class="productos-lista">
                     <!-- Mostrar snacks -->
                     {% for snack in snacks %}
+                    {% if snack.stock > 0 %}
                     <li class="producto">
                         <input type="checkbox" id="producto_snack_{{ snack.id }}" name="productos[]" value="snack_{{ snack.id }}" data-tipo="snack" data-precio="{{ snack.precio }}" onchange="toggleCantidad(this)">
-                        <label for="producto_snack_{{ snack.id }}">{{ snack.nombre }} - Precio: ${{ snack.precio }}</label>
+                        <label for="producto_snack_{{ snack.id }}">{{ snack.nombre }} - <strong>Precio:</strong> <script>
+                            var precio_snack = parseFloat("{{ snack.precio }}");
+                            var precio_formateado = "$" + precio_snack.toLocaleString();
+                            document.write(precio_formateado);
+                        </script>
+                        </label>
                         <input type="hidden" name="tipo_producto_snack_{{ snack.id }}" value="snack"> <!-- Agregar el tipo de producto oculto -->
                         <h4>Cantidad:</h4>
                         <input type="number" id="cantidad_snack_{{ snack.id }}" name="cantidades[]" value="1" min="0" disabled>
                     </li>
+                    {% endif %} 
                     {% endfor %}
                     <!-- Mostrar tortas -->
                     {% for torta in tortas %}
+                    {% if torta.stock > 0 %}
                     <li class="producto">
                         <input type="checkbox" id="producto_torta_{{ torta.id }}" name="productos[]" value="torta_{{ torta.id }}" data-tipo="torta" data-precio="{{ torta.precio }}" data-precio-15p="{{ torta.precio_15p }}" data-precio-24p="{{ torta.precio_24p }}" onchange="toggleCantidad(this)">
-                        <label for="producto_torta_{{ torta.id }}">{{ torta.nombre }} - Precio: ${{ torta.precio }}</label>
+                        <label for="producto_torta_{{ torta.id }}">{{ torta.nombre }} - <strong>Precio:</strong> <script>
+                            var precio_torta = parseFloat("{{ torta.precio }}");
+                            var precio_formateado = "$" + precio_torta.toLocaleString();
+                            document.write(precio_formateado);
+                        </script>
+                        </label>
                         <input type="hidden" name="tipo_producto_torta_{{ torta.id }}" value="torta"> <!-- Agregar el tipo de producto oculto -->
                         <h4>Tamaño:</h4>
                         <select id="tamanio_torta_{{ torta.id }}" name="tamanios">
-                            <option value="7">7 personas</option>
-                            <option value="15">15 personas</option>
-                            <option value="24">24 personas</option>
+                            <option value="{{ torta.precio }}">7 personas</option>
+                            <option value="{{ torta.precio_15p }}">15 personas</option>
+                            <option value="{{ torta.precio_24p }}">24 personas</option>
                         </select>
                         <input type="hidden" id="cantidad_torta_{{ torta.id }}" name="cantidades[]" value="1" min="0" disabled>
                     </li>
+                    {% endif %}
                     {% endfor %}
                 </ul>
             </div>                        
@@ -89,6 +114,18 @@
             </div>
         </form>
     </div>
+        <!-- Formulario para seleccionar el filtro -->
+        <div class="filtro-container">
+            <h2>Resumen de Ventas</h2>
+            <form method="get" onchange="this.submit()" class="filtro-form">
+                <label for="filtro" class="filtro-label">Filtrar:</label>
+                <select name="filtro" id="filtro" class="filtro-select">
+                    <option value="diario" {% if filtro == 'diario' %} selected {% endif %}>Diario</option>
+                    <option value="semanal" {% if filtro == 'semanal' %} selected {% endif %}>Semanal</option>
+                    <option value="mensual" {% if filtro == 'mensual' %} selected {% endif %}>Mensual</option>
+                </select>
+            </form>
+        </div>
     <div class="container">
         <h2>Detalles de la Venta</h2>
         <table class="styled-table">
@@ -107,7 +144,15 @@
                 <tr>
                     <td>{{ venta.cliente.nombre }}</td>
                     <td>{{ venta.forma_de_pago }}</td>
-                    <td>${{ venta.monto_total }}</td>
+                    <td class="monto-total">
+                        $<span id="monto_total_{{ venta.id }}">
+                            {{ venta.monto_total }}
+                        </span>
+                        <script>
+                            var monto = parseFloat(document.getElementById("monto_total_{{ venta.id }}").textContent);
+                            document.getElementById("monto_total_{{ venta.id }}").textContent = monto.toLocaleString();
+                        </script>
+                    </td>                    
                     <td>
                         <button id="btn_mostrar_ocultar_{{ venta.id }}" class="btn-MostrarOcultar" onclick="toggleDetalles('{{ venta.id }}')">Mostrar</button>
                         <div id="detalles_venta_{{ venta.id }}" style="display: none;">
@@ -115,13 +160,19 @@
                                 {% for detalle in venta.detalleventa_set.all %}
                                     <li>
                                         {% if detalle.content_type_id == 12 %} <!-- Torta es id 12-->
-                                            {{ detalle.producto.nombre }} - Tamaño: {{ detalle.tamaño }}
+                                        <p><strong>Torta:</strong> {{ detalle.producto.nombre }} - <strong>Valor:</strong> {{ detalle.tamaño }}
                                         {% else %}
-                                            {{ detalle.producto.nombre }} - Cantidad: {{ detalle.cantidad }}
+                                        <p><strong>Snack:</strong> {{ detalle.producto.nombre }} - <strong>Cantidad:</strong> {{ detalle.cantidad }}
                                         {% endif %}
                                     </li>
                                 {% endfor %}
-                            </ul>                            
+                                <div id="costo_envio_{{ venta.id }}">{{ venta.costo_sector }}</div>
+                                <script>
+                                    var costoEnvio = parseFloat(document.getElementById("costo_envio_{{ venta.id }}").textContent.replace('$', ''));
+                                    document.getElementById("costo_envio_{{ venta.id }}").textContent = 'Costo de envío: $' + costoEnvio.toLocaleString();
+                                </script>
+                            </ul>
+                                                   
                         </div>       
                     </td>
                     <td>{{ venta.fecha|date:"Y-m-d H:i" }}</td> <!-- Formatear la fecha -->
@@ -139,36 +190,50 @@
         </table>
     </div>  
     <script>
-        // Función para actualizar el monto total cuando cambia la cantidad de un producto
-        function actualizarMontoTotal() {
-            var total = 0;
-            var checkboxes = document.querySelectorAll('input[type="checkbox"][name="productos[]"]');
-            
-            checkboxes.forEach(function(checkbox) {
-                if (checkbox.checked) {
-                    var productoId = checkbox.value.split('_')[1]; // Obtener solo el ID real del producto
-                    var precio = parseFloat(checkbox.dataset.precio);
-                    var tipoProducto = checkbox.dataset.tipo;
+// Función para actualizar el monto total cuando cambia la cantidad de un producto
+// Función para actualizar el monto total cuando cambia la cantidad de un producto
+function actualizarMontoTotal() {
+    var total = 0;
+    var checkboxes = document.querySelectorAll('input[type="checkbox"][name="productos[]"]');
     
-                    var cantidadInput = document.getElementById('cantidad_' + tipoProducto + '_' + productoId);
-                    
-                    if (cantidadInput) {
-                        var cantidad = parseInt(cantidadInput.value);
-                        total += precio * cantidad;
-                    } else {
-                        console.error("Elemento de cantidad no encontrado para el producto con ID: " + productoId);
-                    }
-                }
-            });
+    checkboxes.forEach(function(checkbox) {
+        if (checkbox.checked) {
+            var productoId = checkbox.value.split('_')[1]; // Obtener solo el ID real del producto
+            var precio = parseFloat(checkbox.dataset.precio);
+            var tipoProducto = checkbox.dataset.tipo;
+
+            var cantidadInput = document.getElementById('cantidad_' + tipoProducto + '_' + productoId);
             
-            document.getElementById('montoR').value = total;
+            if (cantidadInput) {
+                var cantidad = parseInt(cantidadInput.value);
+                total += precio * cantidad;
+            } else {
+                console.error("Elemento de cantidad no encontrado para el producto con ID: " + productoId);
+            }
+
+            // Obtener el valor seleccionado del tamaño de la torta solo si la torta está seleccionada y no ha sido sumada previamente
+            if (tipoProducto === 'torta' && cantidadInput && cantidadInput.disabled === false) {
+                var selectTorta = document.getElementById('tamanio_torta_' + productoId);
+                var precioTortaSeleccionada = parseFloat(selectTorta.value);
+                total += precioTortaSeleccionada - precio; // Restar el precio normal de la torta si ya se había sumado
+            }
         }
+    });
+
+    // Obtener el valor del costo de sector
+    var costoSector = parseInt(document.getElementById('costo_sectorR').value);
+    total += costoSector;
+
+    // Mostrar el monto total en el campo correspondiente
+    document.getElementById('montoR').value = total;
+}
+
+
         
         // Función para validar el formulario antes de enviarlo
         function validarFormulario() {
             var cliente = document.getElementById('clienteR').value;
             var formaDePago = document.getElementById('forma_de_pagoR').value;
-    
             var checkboxes = document.querySelectorAll('input[type="checkbox"][name="productos[]"]');
             var alMenosUnoSeleccionado = Array.from(checkboxes).some(function(checkbox) {
                 return checkbox.checked;
@@ -257,7 +322,7 @@
             }
         });
     </script>
-    
+
     
 </body>
 </html>

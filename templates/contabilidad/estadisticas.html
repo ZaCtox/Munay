@@ -15,28 +15,84 @@
             <img src="{% static "img/icon-decorativos/volver.png" %}" alt="Volver" class="volver-icon">
         </a>
     </div>
-    <!-- Formulario para seleccionar el filtro -->
-    <div class="filtro-container">
-        <form method="get" onchange="this.submit()">
-            <label for="filtro">Filtrar por:</label>
-            <select name="filtro" id="filtro">
-                <option value="diario"{% if filtro == 'diario' %} selected{% endif %}>Diario</option>
-                <option value="semanal"{% if filtro == 'semanal' %} selected{% endif %}>Semanal</option>
-                <option value="mensual"{% if filtro == 'mensual' %} selected{% endif %}>Mensual</option>
-            </select>
-        </form>        
-    </div>
+<!-- Formulario para seleccionar el filtro -->
+<div class="filtro-container">
+    <form method="get" onchange="this.submit()" class="filtro-form">
+        <label for="filtro" class="filtro-label">Filtrar:</label>
+        <select name="filtro" id="filtro" class="filtro-select">
+            <option value="diario" {% if filtro == 'diario' %} selected {% endif %}>Diario</option>
+            <option value="semanal" {% if filtro == 'semanal' %} selected {% endif %}>Semanal</option>
+            <option value="mensual" {% if filtro == 'mensual' %} selected {% endif %}>Mensual</option>
+        </select>
+    </form>        
+</div>
+
 
 <!-- Aquí se mostrará el gráfico -->
 <div class="graph-container">
     <h2 class="graph-title">Gráfico de Ventas y Gastos</h2>
-    <div id="grafico" style="width: 100%; height: 100%;"></div>
+    <div id="grafico" style="width: 95%; height: 95%;"></div>
         {{ graph_html|safe }}
     </div>
 </div>
+<div class="container-graph">
+    <div id="total-ganancias">Total de ganancias: ${{ total_ganancias }}</div>
+    <div id="total-gastos">Total de gastos: ${{ total_gastos }}</div>
+    <div id="total" class="{% if diferencia > 0 %}ganancia{% elif diferencia < 0 %}perdida{% else %}equilibrio{% endif %}">
+        Total: $<span id="total-diferencia">{{ diferencia }}</span> {% if diferencia > 0 %}(Ganancia){% elif diferencia < 0 %}(Pérdida){% else %}(Equilibrio){% endif %}
+    </div>
+</div>
+
+
 
     <!-- Script para la biblioteca Plotly -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <script>
+        // Función para agregar puntos como separadores de miles
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+    
+        // Función para formatear los números al cargar la página
+        window.onload = function() {
+            formatNumbers();
+        };
+    
+        // Función para formatear los números
+        function formatNumbers() {
+            var totalGanancias = document.getElementById('total-ganancias');
+            var totalGastos = document.getElementById('total-gastos');
+            var totalDiferencia = document.getElementById('total-diferencia');
+    
+            if (totalGanancias && totalGastos && totalDiferencia) {
+                var gananciasTexto = totalGanancias.innerText.replace('Total de ganancias: $', ''); // Eliminamos 'Total de ganancias: $'
+                var gastosTexto = totalGastos.innerText.replace('Total de gastos: $', ''); // Eliminamos 'Total de gastos: $'
+                var diferenciaTexto = totalDiferencia.innerText;
+    
+                // Convertimos el texto a número y verificamos si es válido
+                var ganancias = parseFloat(gananciasTexto);
+                var gastos = parseFloat(gastosTexto);
+                var diferencia = parseFloat(diferenciaTexto);
+    
+                // Verificamos si el número es válido
+                if (!isNaN(ganancias) && !isNaN(gastos) && !isNaN(diferencia)) {
+                    var gananciasFormateadas = numberWithCommas(ganancias);
+                    var gastosFormateados = numberWithCommas(gastos);
+                    var diferenciaFormateada = numberWithCommas(diferencia);
+    
+                    // Agregamos el signo de dólar nuevamente
+                    totalGanancias.innerText = 'Total de ganancias: $' + gananciasFormateadas;
+                    totalGastos.innerText = 'Total de gastos: $' + gastosFormateados;
+                    totalDiferencia.innerText = diferenciaFormateada;
+                }
+            }
+        }
+    </script>
+    
+    
+
+
 </body>
 </html>
 

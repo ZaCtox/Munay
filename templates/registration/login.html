@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulario de Acceso</title>
+<link href="https://fonts.googleapis.com/css?family=Nunito&display=swap" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css?family=Overpass&display=swap" rel="stylesheet">
+<!-- Link hacia el archivo de estilos css -->
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+    <img src="{% static 'img/Munay_logo.png' %}" alt="Munay Logo" class="logo">  
+    <div id="contenedor">
+        <div id="central">
+            <div id="login">
+                <div class="titulo">
+                    Bienvenido
+                </div>
+                <form method="POST">
+                    {% csrf_token %}
+                    <label for = "usuario">
+                        <input type="text" name="username" placeholder="Rut" required>
+                    </label>
+                    <label for ="pass">
+                        <input type="password" placeholder="Contraseña" name="password" required>
+                    </label>
+                    <button type="submit" title="Ingresar" name="Ingresar">Login</button>
+                </form>
+            </div>
+            <div class="inferior">
+                <a href="{% url 'index' %}">Volver</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

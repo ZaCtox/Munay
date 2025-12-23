@@ -1,0 +1,315 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    width: auto;
+}
+
+/* Estilos para el icono de volver */
+.header-container {
+    display: flex;
+    align-items: center; /* Centra verticalmente los elementos */
+    background-color: #b88674; /* Color de fondo */
+    padding: 1%; /* Añade un espacio alrededor del texto */
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4); /* Sombra de texto */
+    width: auto;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    flex: 1;
+    text-align: center;
+    color: #ffffff;
+    font-size: clamp(20px, 5vw, 48px);
+    margin: 0;
+}
+
+.volver-icon {
+    display: flex;
+    width: clamp(31px, 5vw, 50px);
+    height: auto;
+    cursor: pointer;
+    justify-content: end;
+}
+
+.message-success {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid #317a3b;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 9999;
+    background-color: lightgreen;
+}
+
+.texto-negro {
+    color: black;
+}
+
+.owl-carousel .item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px; /* Añadir espacio interno alrededor del contenido */
+}
+
+.owl-carousel .item img {
+    max-width: clamp(200px, 40%, 100%); /* Ancho máximo de 200px, o el 50% del contenedor, o el 100% del contenedor, lo que sea menor */
+    height: calc(25rem* 0.95);
+    border-radius: 10px;
+    margin-top: clamp(1rem, 5%, 2rem);
+}
+
+.owl-carousel .item .text {
+    width: clamp(200px, 50%, 100%);
+    text-align: justify;
+    margin-top: clamp(2rem, 5%, 2rem);
+    padding: 0 clamp(3px, 2%, 21px);
+    color: #000000;
+    font-size: clamp(8px, 2vw, 1rem);
+}
+
+.text .btn-below-text {
+    display: block;
+    margin-top: 20px; /* Puedes ajustar este valor según sea necesario */
+    text-align: center;
+    color: #ffffff;
+    background-color: #b88674;
+    padding: 10px;
+    
+    margin-right: (1rem, 2vw, 5rem);
+    border-radius: 25px;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.text .btn-below-text:hover {
+    background-color: #a96c5b;
+}
+
+.btn-eliminar {
+    background-color: red; /* Color de fondo rojo */
+    color: white; /* Color del texto */
+    border: 1px solid #c0392b; /* Borde rojo */
+    border-radius: 5px; /* Bordes redondeados */
+    padding: clamp(5px, 2%, 10px) clamp(1px, 4%, 20px); /* Padding entre 5px y 10px verticalmente, preferiblemente 2% del ancho del contenedor, y entre 10px y 20px horizontalmente, preferiblemente 4% del ancho del contenedor */
+    margin: clamp(5px, 2%, 10px); /* Margen entre 5px y 10px, preferiblemente 2% del ancho del contenedor */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s; /* Transición suave de estilos */   
+    font-size: clamp(15px, 2vw, 23px);
+    text-align: center; 
+}    
+
+
+/* Cambia el color del botón al pasar el ratón sobre él */
+.btn-eliminar:hover {
+    background-color: #c0392b; /* Color de fondo rojo más oscuro */
+    border-color: #a93226; /* Borde rojo más oscuro */
+}
+
+.button-editar {
+    background-color: green;
+    color: white;
+    border: 1px solid #1b7743;
+    border-radius: 5px;
+    padding: clamp(5px, 2%, 11px) clamp(2px, 6%, 13px);
+    margin: clamp(5px, 2%, 10px);
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+    font-size: clamp(15px, 2vw, 23px);
+    text-align: center;
+}
+
+/* Cambia el color del botón al pasar el ratón sobre él */
+.button-editar:hover {
+    background-color: #065320; /* Color de fondo rojo más oscuro */
+    border-color: #04350f; /* Borde rojo más oscuro */
+}
+
+.carousel-container {
+    position: relative;
+    overflow: hidden;
+    max-width: 45%;
+    margin-top: 1rem; /* Ajusta el margen superior según sea necesario */
+}
+
+.carousel-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+    padding: 20px;
+}
+
+.carousel-text {
+    text-align: center;
+    margin-top: 20px; /* Ajusta el margen superior según sea necesario */
+}
+
+.formulario {
+    display: flow; /* No existe 'display: flow', puedes usar 'display: block' o 'display: flex' dependiendo de tus necesidades */
+    width: clamp(200px, 43vmax, 600px); /* Ancho del formulario entre 200px y 600px, preferiblemente 43vmax */
+    border: 7px solid #995d40; /* Cambia el grosor y el color del borde */
+    margin: 0 auto; /* Centra el formulario horizontalmente */
+    background-color: #f3e7e5; /* Fondo blanco */
+    padding: clamp(10px, 2%, 20px); /* Padding entre 10px y 20px, preferiblemente 2% del ancho del contenedor */
+    border-radius: 10px; /* Bordes redondeados */
+    box-sizing: border-box; /* Asegura que el ancho incluya el relleno y el borde */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    margin-bottom: 2rem;
+}
+.text {
+    position: relative;
+    padding-top: 40px; /* Ajusta esta cantidad según sea necesario */
+}
+
+.btn-eliminar {
+    position: absolute;
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    top: -9px;
+    right: 1rem;
+}
+
+.button-editar {
+    position: absolute;
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    top: -9px;
+    right: clamp(1rem, 30%, 25rem);
+}
+
+.group {
+    margin-bottom: 1rem; /* Espacio entre grupos */
+    display: flex; /* Utiliza flexbox para alinear elementos */
+    align-items: center; /* Alinea verticalmente los elementos */
+}
+
+.label {
+    width: 120px; /* Ancho fijo del label */
+    font-weight: bold; /* Texto en negrita */
+    margin-right: 10px; /* Espacio a la derecha del label */
+}
+
+.input {
+    width: calc(100% - 120px); /* Toma el ancho restante después de tener en cuenta el ancho de la etiqueta */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* estilos para el boton de agregar producto */
+.form-submit {
+    border: 0;
+    background-image: linear-gradient(
+        150deg, #d79372, #db6b73, #D9B3A1
+    );
+    border-radius: 8px;
+    color: #ffffff;
+    display: flex;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 6px;
+    cursor: pointer;
+    transition: .3s;
+    position: relative;
+}
+
+.form-submit span {
+    background-color: #111;
+    padding: 16px 24px;
+    border-radius: 6px;
+    transition: .3s;
+}
+
+.form-submit:hover span {
+    color: #111;
+    background-image: linear-gradient(
+        150deg, #d79372, #db6b73, #D9B3A1
+    );
+}
+
+.form-submit:active {
+    transform: scale(0.9);
+}
+
+.form-submit-editar {
+    border: 0;
+    background-image: linear-gradient(
+        150deg, #E0C758, #C7E058, #E0D758
+    );
+    border-radius: 8px;
+    color: #ffffff;
+    display: flex;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 6px;
+    cursor: pointer;
+    transition: .3s;
+    position: relative;
+}
+
+.form-submit-editar span {
+    background-color: #111;
+    padding: 16px 24px;
+    border-radius: 6px;
+    transition: .3s;
+}
+
+.form-submit-editar:hover span {
+    color: #111;
+    background-image: linear-gradient(
+        150deg, #debe2f, #C7E058, #e0d437
+    );
+}
+
+.form-submit-editar:active {
+    transform: scale(0.9);
+}
+
+.small-image {
+    display: flex;
+    width: clamp(3rem, 50%, 8rem); /* Ancho entre 100px y 200px */
+    height: clamp(3rem, 50%, 8rem); /* Altura entre 100px y 200px */
+    padding-left: clamp(3rem,50%,6rem); /* Espacio a la izquierda de 3 rem */
+}
+
+/* Estilos para dispositivos móviles */
+@media only screen and (max-width: 1278px) {
+    .owl-carousel {
+        margin: 0; /* Esto eliminará el margen horizontal en dispositivos móviles */
+        max-width: 98%; /* Establece el ancho máximo al 100% */
+        
+    }
+    .full-width-image{
+        border-radius: 23px;
+    }
+}
+
+/* Estilos para pantallas más grandes */
+@media only screen and (min-width: 1279px) {
+    .owl-carousel {
+        margin: 0 auto; /* Esto centrará horizontalmente el carrusel en pantallas más grandes */
+        width: 45%;
+        max-width: 55%;
+    }
+}

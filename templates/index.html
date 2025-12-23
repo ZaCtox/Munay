@@ -1,7 +1,6 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
 {% block content %}
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -9,57 +8,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/carrusel.css' %}">
     <link rel="stylesheet" href="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/assets/owl.theme.default.min.css">
 </head>
 
 <body>
-    <div id="owl-carousel-container">
+       <!-- Mostrar los slides existentes -->
+       <div id="owl-carousel-container">
         <div class="row">
             <div class="large-12 columns">
                 <div class="owl-carousel owl-theme">
-                    <div class="item">
-                        <img src="{% static 'img/foto14F.png' %}" alt="Slide 1">
-                        <div class="text">
-                            <h2>❤️‍🔥 ¡𝑪𝒆𝒍𝒆𝒃𝒓𝒆𝒎𝒐𝒔 𝒆𝒍 𝒂𝒎𝒐𝒓 𝒚 𝒍𝒂 𝒅𝒖𝒍𝒛𝒖𝒓𝒂 𝒆𝒔𝒕𝒆 14 𝒅𝒆 𝒇𝒆𝒃𝒓𝒆𝒓𝒐 𝒄𝒐𝒏 𝒏𝒖𝒆𝒔𝒕𝒓𝒂 𝒆𝒙𝒒𝒖𝒊𝒔𝒊𝒕𝒂 𝒃𝒐𝒙 𝒅𝒆 𝒓𝒆𝒑𝒐𝒔𝒕𝒆𝒓𝒊́𝒂 𝒔𝒂𝒍𝒖𝒅𝒂𝒃𝒍𝒆!😍 ¡¡𝑪𝑼𝑷𝑶𝑺 𝑳𝑰𝑴𝑰𝑻𝑨𝑫𝑶𝑺!!</h2>
-                            <p>𝑩𝑶𝑿 𝑪𝑼𝑷𝑰𝑫𝑶 💘
-                                𝐶𝑜𝑛𝑡𝑖𝑒𝑛𝑒
-                                ♥️ 𝑇𝐴𝑅𝑇𝐴 𝑇𝑅𝐼𝐿𝑂𝐺𝐼́𝐴𝑆 𝑀𝐴𝑁𝐽𝐴𝑅 𝐴𝐿𝑀𝐸𝑁𝐷𝑅𝐴𝐷𝑂 𝐹𝑅𝐴𝑀𝐵𝑈𝐸𝑆𝐴
-                                🫶🏻𝐵𝑂𝑀𝐵𝑂́𝑁 𝐼𝑁𝐾𝐴𝑇
-                                🍫 𝐶𝐻𝑂𝐶𝑂𝑁𝑂 𝐵𝐿𝐴𝑁𝐶𝑂
-                                🫶🏻𝐵𝑂𝑀𝐵𝑂́𝑁 𝐼𝑁𝐾𝐴𝑇
-                                <br><br>
-                                ❤️‍🩹 𝑩𝑶𝑿 𝑨𝑴𝑶𝑹 𝑴𝑰𝑶 🌹
-                                ¡𝑈𝑛 𝑟𝑒𝑔𝑎𝑙𝑜 𝑑𝑒 𝑎𝑚𝑜𝑟 𝑝𝑟𝑜𝑝𝑖𝑜 𝑒𝑛 𝑐𝑎𝑑𝑎 𝑑𝑒𝑡𝑎𝑙𝑙𝑒 𝑑𝑒 𝑒𝑠𝑡𝑒 𝑏𝑜𝑥!
-                                <br><br>
-                                𝐶𝑜𝑛𝑡𝑖𝑒𝑛𝑒
-                                ♥️𝑇𝐴𝑅𝑇𝐴 𝑇𝑅𝐼𝐿𝑂𝐺𝐼́𝐴𝑆 𝑀𝐴𝑁𝐽𝐴𝑅 𝐴𝐿𝑀𝐸𝑁𝐷𝑅𝐴𝐷𝑂 𝐹𝑅𝐴𝑀𝐵𝑈𝐸𝑆𝐴
-                                🍫𝐹𝐸𝑅𝑅𝐸𝑅𝑂 𝑅𝑂𝐶𝐻𝐸𝑅
-                                🌹𝑅𝑂𝑆𝐴 𝐷𝐴𝑀𝐴𝑆𝐶𝑂 𝑇𝑈𝑅𝐶𝑂
-                                🍫𝐹𝐸𝑅𝑅𝐸𝑅𝑂 𝑅𝑂𝐶𝐻𝐸𝑅
-                                🫶🏻𝐵𝑂𝑀𝐵𝑂́𝑁 𝐼𝑁𝐾𝐴𝑇</p>
-                                <!-- Botón agregado -->
-                                <a href="#" class="btn-below-text">Ver Oferta</a>
+                    {% for slide in slides %}
+                        <div class="item">
+                            <img src="{{ slide.imagen.url }}" alt="{{ slide.title }}">
+                            <div class="text">
+                                <h2>{{ slide.title }}</h2>
+                                <p>{{ slide.content }}</p>
+                                {% if 'wa.me' in slide.urls %}
+                                <a href="{{ slide.urls }}?text=¡Hola! Quiero pedir un box exclusivo para {{ slide.oferta}}"  class="btn-below-text">{{ slide.boton_texto }}</a>
+                            {% else %}
+                                <a href="{{ slide.urls }}" class="btn-below-text">{{ slide.boton_texto }}</a>
+                            {% endif %}
+                            </div> 
                         </div>
-                    </div>
-                    <div class="item">
-                        <img src="{% static 'img/feria1.jpg' %}" alt="Slide 2">
-                        <div class="text">
-                            <h2>Texto sobre descuento en 2da Unidad</h2>
-                            <p>Descripción o contenido específico para Slide 2.</p>
-                             <!-- Botón agregado -->
-                             <a href="#" class="btn-below-text">Ver Productos</a>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img src="{% static 'img/CollageIg.png' %}" alt="Slide 3">
-                        <div class="text">
-                            <h2>Conoce mas sobre Munay!!</h2>
-                            <p>Informacion sobre el Instagram</p>
-                             <!-- Botón agregado -->
-                             <a href="https://www.instagram.com/munay_dulcenutricion/" class="btn-below-text">Ver Instagram</a>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -67,34 +40,37 @@
     <div class="space"></div> <!-- Contenedor para el espacio -->
     <div class="image-container">
         <img src= "{% static 'img/collage.jpg' %}" alt="Imagen a pantalla completa" class="full-width-image">
-        <div class="text-inside-image">Tu texto aquí</div>
+        <div class="text-inside-image">
+            <p>¡Bienvenidos a tu rincón saludable!</p><p>Dulces que alimentan el cuerpo y nutren el alma</p>
+        </div>        
         <a href="{% url 'productos' %}" class="btn-ver-productos">Ver Productos</a>
     </div>
-    <script src="https://owlcarousel2.github.io/OwlCarousel2/assets/vendors/jquery.min.js"></script>
-    <script src="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/owl.carousel.js"></script>
-    <script>
-        var owl = $('.owl-carousel');
-        owl.owlCarousel({
-            margin: 10,
-            loop: true,
-            responsive: {
-                0: {
-                    items: 1
-                },
-                200: {
-                    items: 1
-                }
+<!-- Script para inicializar el carrusel de Owl Carousel -->
+<script src="https://owlcarousel2.github.io/OwlCarousel2/assets/vendors/jquery.min.js"></script>
+<script src="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/owl.carousel.js"></script>
+<script>
+    var owl = $('.owl-carousel');
+    owl.owlCarousel({
+        margin: 10,
+        loop: true,
+        responsive: {
+            0: {
+                items: 1
             },
-            autoplay: true,
-            autoplayTimeout: 5000,
-            autoplayHoverPause: true,
-            onChanged: function(event) {
-                var currentSlide = event.item.index + 1; // Obtiene el número de la diapositiva actual
-                var currentText = $('.owl-carousel .item:nth-child(' + currentSlide + ') .text').html(); // Obtiene el texto de la diapositiva actual
-                $('.text-container').html(currentText); // Actualiza el texto en el contenedor
+            200: {
+                items: 1
             }
-        });
-    </script>
+        },
+        autoplay: true,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        onChanged: function(event) {
+            var currentSlide = event.item.index + 1; // Obtiene el número de la diapositiva actual
+            var currentText = $('.owl-carousel .item:nth-child(' + currentSlide + ') .text').html(); // Obtiene el texto de la diapositiva actual
+            $('.text-container').html(currentText); // Actualiza el texto en el contenedor
+        }
+    });
+</script>
 </body>
 
 </html>

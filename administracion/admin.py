@@ -9,3 +9,5 @@ admin.site.register(Proveedor)
 admin.site.register(Gasto)
 admin.site.register(Venta)
 admin.site.register(DetalleVenta)
+admin.site.register(CostoSector)
+

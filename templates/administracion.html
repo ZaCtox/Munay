@@ -5,25 +5,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/administracion.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="icon" type="image/png" href="{% static 'img/Munay_logo.png' %}">
+    {% block styles %}{% endblock %}
     <title>Munay</title>
-
 </head>
 <body>
     <h1 class="titulo">Administración Munay</h1>
-    <main>
-        <nav class="barra">
-            <ul class="nav-links">
-                <li><a href="{% url 'administracion' %}" class="barra-link">Inicio</a></li>
-                <li><a href="{% url 'admin_producto' %}" class="barra-link">Productos</a></li>
-                <li><a href="{% url 'admin_info_inicio' %}" class="barra-link">Información de Inicio</a></li>
-                <li><a href="{% url 'admin_contabilidad' %}" class="barra-link">Contabilidad</a></li>
-                <li><a href="{% url 'index' %}" class="cerrar-sesion barra-link">Cerrar Sesión</a></li>
+        <div class="barra_principal">
+            <ul>
+                <li><a href="{% url 'administracion' %}" class="opcion-barra-principal">Inicio</a></li>
+                <li><a href="{% url 'admin_producto' %}" class="opcion-barra-principal">Productos</a></li>
+                <li><a href="{% url 'admin_info_inicio' %}" class="opcion-barra-principal">Información de Inicio</a></li>
+                <li><a href="{% url 'admin_contabilidad' %}" class="opcion-barra-principal">Contabilidad</a></li>
+                <li><a href="{% url 'salir' %}" class="opcion-barra-principal">Cerrar Sesión</a></li>
             </ul>            
-        </nav>
-    </main>
-
-    <!-- Divisiones para las tres secciones -->
+        </div>
+    <div class="barra_principal mobile-menu">
+        <button id="mobile-menu-toggle" class="mobile-menu-btn">Menu <i class="fas fa-bars"></i></button>
+        <ul class="opciones-barra-principal"> <!-- Cambiado el nombre de la clase -->
+            <li><a href="{% url 'administracion' %}">Inicio</a></li>
+            <li><a href="{% url 'admin_producto' %}">Productos</a></li>
+            <li><a href="{% url 'admin_info_inicio' %}">Información de Inicio</a></li>
+            <li><a href="{% url 'admin_contabilidad' %}">Contabilidad</a></li>
+            <li><a href="{% url 'salir' %}" class="opcion-barra-principal cerrar-sesion">Cerrar Sesión</a></li>
+        </ul>
+    </div>
     <div class="contenedor-secciones">
         <div class="seccion1">
             <h2 class="titulo-seccion">Productos</h2>
@@ -32,31 +39,54 @@
                 encuentren ingresados en la base de datos, además de poder agregar nuevos
                 productos.<br><br>
                 Para facilitar la gestión de productos, podrás aumentar y disminuir el stock
-                de cada producto, editar los demas datos y eliminar los productos que ya no
+                de cada producto, editar los demás datos y eliminar los productos que ya no
                 quieras vender
             </p>
         </div>
-
         <div class="seccion2">
             <h2 class="titulo-seccion">Información de Inicio</h2>
             <p class="texto-seccion">
                 Con la finalidad de tener un inicio más llamativo para los clientes,
                 podrás editar el inicio para poner ofertas, productos especiales de
                 fechas festivas como Navidad o San Valentín.<br><br>
-                Desde el título, imagenes y mensajes para despertar aún más el
+                Desde el título, imágenes y mensajes para despertar aún más el
                 interés de sus clientes
             </p>
         </div>
-
         <div class="seccion3">
             <h2 class="titulo-seccion">Contabilidad</h2>
             <p class="texto-seccion">
                 Aquí podrás ver los datos de los Clientes, Proveedores, Ventas, Gastos, Estadística
                 sobre las ventas y gastos y lista de Productos Vendidos.
-                Además de administrar cada tabla de datos agregando o eliminado
+                Además de administrar cada tabla de datos agregando o eliminando
             </p>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const opcionesBarraPrincipal = document.querySelector('.opciones-barra-principal');
 
+            // Agregar evento de clic al botón del menú móvil
+            mobileMenuBtn.addEventListener('click', function(event) {
+                event.stopPropagation(); // Evita que el evento de clic se propague a otros elementos
+                // Alternar la clase 'active' en la barra de menú móvil
+                opcionesBarraPrincipal.classList.toggle('active');
+            });
+
+            // Agregar evento de clic al documento para cerrar el menú desplegable cuando se haga clic en cualquier otro lugar
+            document.addEventListener('click', function(event) {
+                const target = event.target;
+                const isMenuOpen = opcionesBarraPrincipal.classList.contains('active');
+                // Si el menú está abierto y se hace clic en cualquier otro lugar que no sea el botón del menú
+                if (isMenuOpen && target !== mobileMenuBtn && !opcionesBarraPrincipal.contains(target)) {
+                    // Ocultar el menú desplegable
+                    opcionesBarraPrincipal.classList.remove('active');
+                }
+            });
+        });
+    </script>
+    <!-- Bootstrap -->
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>

@@ -1,15 +1,22 @@
 * {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family: Lato, "sans-serif", Roboto, RobotoFallback, Helvetica, Arial, sans-serif;;
+}
+
+.prod-btn{
+    width: 40%;
+    padding: 0;
+    border: none;
+    border-radius: 10px;
 }
 
 .imagen-filtro {
-    width: clamp(200px, 40%, 300px); /* Ancho con clamp */
+    width: 100%; /* Ancho deseado */
     height: auto; /* Altura automática para mantener la proporción */
     display: block; /* Mostrar como bloque para centrar */
-    margin: 0 auto 20px; /* Centrar horizontalmente y agregar espacio inferior */
     cursor: pointer; /* Cambiar el cursor al pasar por encima */
     border-radius: 10px;
     transition: transform 0.3s ease; /* Transición suave para el cambio de tamaño */
+    filter: brightness(0.5);
 }
 
 .imagen-filtro:hover {
@@ -24,27 +31,16 @@
 .botones-container {
     text-align: center;
     margin: 0 auto 20px; /* Centrar horizontalmente y agregar espacio inferior */
-    display: flex; /* Utilizar flexbox para alinear verticalmente los botones */
-    justify-content: center; /* Centrar horizontalmente los botones */
-    align-items: center; /* Centrar verticalmente los botones */
 }
 
-
-/* Estilos para los botones dentro de .botones-container */
+/* Estilos para los botones */
 .botones-container button {
-    margin: 0 10px; /* Espacio entre los botones */
+    margin: 0 auto 20px; /* Centrar horizontalmente y agregar espacio inferior */
     cursor: pointer; /* Cambiar el cursor al pasar por encima */
     border-radius: 10px; /* Borde redondeado */
     background: none; /* Eliminar el fondo gris por defecto */
     border: none; /* Eliminar el borde */
-    display: inline-block; /* Agregar esta propiedad */
-    vertical-align: middle; /* Alinear verticalmente */
 }
-
-
-
-
-
 
 /* Estilos para los contenedores de productos */
 .product-container {
@@ -54,7 +50,7 @@
 }
 
 .producto {
-    width: clamp(300px, 40%, 400px); /* Ancho con clamp */
+    max-width: 22rem;
     margin: 10px; /* Espacio entre los contenedores de producto */
     border: 1px solid #ccc; /* Borde para los contenedores de producto */
     padding: 10px; /* Espacio interno dentro de los contenedores de producto */
@@ -62,16 +58,16 @@
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
 
-
 /* Estilos para la imagen del producto */
 .producto-imagen {
     flex: 1; /* Ocupar el 50% del espacio disponible */
     text-align: center; /* Centrar la imagen horizontalmente */
+    
 }
 
 .producto-imagen img {
-    width: 100%; /* Ancho al 100% */
-    height: auto; /* Altura automática para mantener la proporción */
+    max-width: calc(15rem * 0.95);
+    max-height: calc(15rem * 0.95);
 }
 
 /* Estilos para la información del producto */
@@ -87,7 +83,6 @@
     font-weight: bold; /* Hacer el nombre del producto en negrita */
     font-size: 20px;
 }
-
 
 /* Estilos para el buscador */
 .search-form {
@@ -110,7 +105,6 @@
     outline: none; /* Evita el contorno al hacer clic */
     border-radius: 20px;
 }
-
 
 .search-button {
     border: none;
@@ -143,13 +137,12 @@
     height: auto;
 }
 
-
 /* Estilos para el placeholder del input */
 .search-input::placeholder {
     pointer-events: none;
     font-size: 1.4em;
     font-weight: bold;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family: Lato, "sans-serif", Roboto, RobotoFallback, Helvetica, Arial, sans-serif;;
     color: rgba(144, 102, 82, 0.7);
     /* text-transform: uppercase; */
     transition: 0.5s;
@@ -157,20 +150,14 @@
 
 .search-input:focus::placeholder,
 .search-input:not(:placeholder-shown)::placeholder {
-    transform: translateX(15px) translateY(-27px);
+    transform: translateX(15px) translateY(-32px);
     font-size: 1.2em;
 }
-
-
 
 .producto-link {
     text-decoration: none; /* Eliminar el subrayado del enlace */
     color: inherit; /* Heredar el color del texto normal */
 }
-
-
-
-
 
 /* detalles procucto */
 
@@ -196,7 +183,7 @@
     border-radius: 5px;
     margin-bottom: 20px;
     text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-family: Lato, "sans-serif", Roboto, RobotoFallback, Helvetica, Arial, sans-serif;;
 }
 
 .imagen-detalle-producto img {
@@ -211,9 +198,21 @@
     margin-bottom: 20px;
 }
 
+.product-wrapper {
+    position: relative; /* Necesario para el posicionamiento absoluto dentro */
+}
 
+.product-label {
+    position: absolute;
+    top: 50%; /* Posiciona el texto en la mitad superior de la imagen */
+    left: 50%; /* Posiciona el texto en la mitad izquierda de la imagen */
+    transform: translate(-50%, -50%); /* Centra el texto correctamente */
+    color: white; /* Color del texto */
+    padding: 5px 10px; /* Espaciado interior del texto */
+    z-index: 1; /* Coloca el texto por encima de la imagen */
+    font-size: clamp(23px, 5vw, 35px);
 
-
+}
 
 /* Estilos para botones */
 
@@ -232,7 +231,6 @@
     width: 30px;
     height: auto;
 }
-
 
 .boton-agregar-carrito {
     border: 0;
@@ -259,6 +257,23 @@
     transform: scale(.9);
 }
 
-.h2{
-    margin-top: 0%;
+
+h2{
+    margin-top: 1%;
+}
+
+/* Aplicar filtro de desenfoque */
+.blur {
+    filter: blur(5px) grayscale(100%); /* Ajusta el valor de desenfoque según sea necesario */
+}
+
+.sin-stock-text {
+    font-weight: bold;
+    transform: translateY(-7em);
+    display: inline-block;
+    color: white;
+    background-color: #b88674;
+    padding: 8px 15px;
+    border-radius: 20px;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
 }

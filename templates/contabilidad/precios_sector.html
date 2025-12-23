@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración Munay</title>
+    <link rel="stylesheet" href="{% static 'css/admin_contabilidad.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/Munay_logo.png' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="header-container">
+        <h1>Administración de Sectores - Munay</h1>
+        <a href="{% url 'admin_contabilidad' %}" class="volver-link">
+            <img src="{% static "img/icon-decorativos/volver.png" %}" alt="Volver" class="volver-icon">
+        </a>
+    </div>
+
+    <!-- mensaje cuando se agrega un sector correctamente -->
+    {% if messages %}
+    <div class="message-container success-message" id="successMessage">
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                <div class="message-success texto-negro">{{ message }}</div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+
+    <div id="formulario-editar-container"></div> <!-- Contenedor para el formulario de edición -->
+
+    <div class="container formulario">
+        <h2 class="titulo-agregar-venta"><span>¿Quiere agregar un nuevo Sector?</span></h2>
+        <form id="form-agregar-sector" method="post" action="{% url 'precios_sector' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="group">
+                <label for="nombre" class="label">Nombre Sector:</label>
+                <input type="text" id="nombre" name="nombre" class="input" required>
+            </div>
+
+            <div class="group">
+                <label for="costo" class="label">Costo:</label>
+                <input type="number" id="costo" name="costo" class="input" required>
+            </div>
+            <div class="group">
+                <button type="submit" class="form-submit">Agregar Venta</button>
+            </div>
+        </form>
+    </div>   
+
+    <div class="container">
+        <h2>Detalles de los sectores</h2>
+        <table class="styled-table">
+            <tr>
+                <th>Sector</th>
+                <th>Costo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for precio_sector in precios_sectores %}
+            <tr>
+                <td>{{ precio_sector.nombre }}</td>
+                <td><script>
+                    var producto_info = parseFloat("{{ precio_sector.costo }}");
+                    var precio_formateado = "$" + producto_info.toLocaleString();
+                    document.write(precio_formateado);
+                </script></td>
+                <td class="acciones-container">
+                    <button onclick="mostrarFormularioEdicion('{{ precio_sector.id }}')" class="button-editar">Editar</button>
+                    <form action="{% url 'eliminar_sector' id=precio_sector.id %}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este Sector?')">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-eliminar">Eliminar</button>
+                        <input type="hidden" name="id" value="{{ precio_sector.id }}">
+                    </form>                    
+                </td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>  
+
+{% for precio_sector in precios_sectores %}
+<div class="formulario" id="formulario-editar-sector-{{ precio_sector.id }}" style="display: none;">
+    <h2>Editar Sector</h2>
+    <form method="post" action="{% url 'editar_sector' costosector_id=precio_sector.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="group">
+            <label for="nombre" class="label">Nombre Sector:</label>
+            <input type="text" id="nombre" name="nombre" class="input" value="{{ precio_sector.nombre }}" required>
+        </div>
+        <div class="group">
+            <label for="costo" class="label">Costo:</label>
+            <input type="number" id="costo" name="costo" class="input" value="{{ precio_sector.costo }}" required>
+        </div>
+        <div class="group">
+            <button type="submit" class="form-submit-editar">Guardar Cambios</button>
+        </div>
+    </form>
+</div>
+{% endfor %}
+
+<script>
+    // Función para mostrar el formulario de edición y moverlo arriba
+    function mostrarFormularioEdicion(costosectorId) {
+        var formId = 'formulario-editar-sector-' + costosectorId;
+        var formContainer = $('#formulario-editar-container');
+
+        // Oculta todos los formularios de edición
+        $('.formulario').hide();
+
+        // Mueve el formulario de edición al contenedor y lo muestra
+        $('#' + formId).appendTo(formContainer).show();
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var messageContainer = document.querySelector('.message-container');
+
+        if (messageContainer) {
+            messageContainer.style.opacity = '1';
+
+            var fadeOutInterval = setInterval(function() {
+                messageContainer.style.opacity -= 0.1;
+                if (messageContainer.style.opacity <= 0) {
+                    clearInterval(fadeOutInterval);
+                    messageContainer.style.display = 'none';
+                }
+            }, 100);
+
+            var animationDuration = 2000;
+            setTimeout(function() {
+                clearInterval(fadeOutInterval);
+                messageContainer.style.display = 'none';
+            }, animationDuration);
+        }
+    });
+</script>
+</body>
+</html>

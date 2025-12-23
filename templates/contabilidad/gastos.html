@@ -9,13 +9,12 @@
     <link rel="icon" type="image/png" href="{% static 'img/Munay_logo.png' %}">
 </head>
 <body>
-
-<div class="header-container">
-    <h1>Administración de Gastos - Munay</h1>
-    <a href="{% url 'admin_contabilidad' %}" class="volver-link">
-        <img src="{% static "img/icon-decorativos/volver.png" %}" alt="Volver" class="volver-icon">
-    </a>
-</div><br><br>
+    <div class="header-container">
+        <h1>Administración de Gastos - Munay</h1>
+        <a href="{% url 'admin_contabilidad' %}" class="volver-link">
+            <img src="{% static "img/icon-decorativos/volver.png" %}" alt="Volver" class="volver-icon">
+        </a>
+    </div>
 
 <!-- mensaje cuando se agrega un producto correctamente -->
 {% if messages %}
@@ -73,29 +72,19 @@
             <button type="submit" class="form-submit">Agregar Gasto</button>
         </div>
     </form>
-
-    <div class="gastos-summary">
-        <!-- Resumen de gastos por granularidad -->
-        <h2>Resumen de Gastos</h2>
-        <form method="get">
-            <!-- Selección de granularidad -->
-            <select name="filtro">
-                <option value="diario">Diario</option>
-                <option value="semanal">Semanal</option>
-                <option value="mensual">Mensual</option>
-            </select>
-            <!-- Botón para mostrar -->
-            <button type="submit">Mostrar</button>
-        </form>
-        <!-- Resultados de gastos por granularidad -->
-        {% for gasto in gastos %}
-            <!-- Cada elemento del resumen -->
-        {% endfor %}
-    </div>
 </div>
-{% if DEBUG %}
-    <pre>{{ gastos }}</pre>
-{% endif %}
+    <!-- Formulario para seleccionar el filtro -->
+    <div class="filtro-container">
+        <h2>Resumen de Gastos</h2>
+        <form method="get" onchange="this.submit()" class="filtro-form">
+            <label for="filtro" class="filtro-label">Filtrar:</label>
+            <select name="filtro" id="filtro" class="filtro-select">
+                <option value="diario" {% if filtro == 'diario' %} selected {% endif %}>Diario</option>
+                <option value="semanal" {% if filtro == 'semanal' %} selected {% endif %}>Semanal</option>
+                <option value="mensual" {% if filtro == 'mensual' %} selected {% endif %}>Mensual</option>
+            </select>
+        </form>
+    </div>
 
 <!-- Tabla para mostrar todos los gastos -->
 <div class="container">
@@ -104,24 +93,54 @@
         <thead>
             <tr>
                 <th>Proveedor</th>
-                <th>Rut</th>
-                <th>Descripción</th>
-                <th>Tipo</th>
+                <th class="details-hidden">Rut</th>
+                <th class="details-hidden">Descripción</th>
+                <th class="details-hidden">Tipo</th>
                 <th>Forma de Pago</th>
                 <th>Monto</th>
-                <th>Fecha</th>
+                <th class="hide-on-large-screen">Detalles</th>
+                <th class="details-hidden">Fecha</th>
+                <th>Acción</th>
             </tr>
         </thead>
         <tbody>
             {% for gasto in gastos %}
                 <tr>
                     <td>{{ gasto.proveedor.nombre }}</td>
-                    <td>{{ gasto.proveedor.rut }}</td>
-                    <td>{{ gasto.descripcion }}</td>
-                    <td>{{ gasto.tipo }}</td>
+                    <td class="details-hidden">{{ gasto.proveedor.rut }}</td>
+                    <td class="details-hidden">{{ gasto.descripcion }}</td>
+                    <td class="details-hidden">{{ gasto.tipo }}</td>
                     <td>{{ gasto.forma_de_pago }}</td>
-                    <td>{{ gasto.monto }}</td>
-                    <td>{{ gasto.fecha|date:"Y-m-d H:i" }}</td> <!-- Formatear la fecha -->
+                    <td class="monto-total">
+                        $<span id="monto_gasto_{{ gasto.id }}">
+                            {{ gasto.monto }}
+                        </span>
+                        <script>
+                            var montoGasto = parseFloat(document.getElementById("monto_gasto_{{ gasto.id }}").textContent);
+                            document.getElementById("monto_gasto_{{ gasto.id }}").textContent = montoGasto.toLocaleString();
+                        </script>
+                    </td>
+                    
+                    <td class="details-hidden">{{ gasto.fecha|date:"Y-m-d H:i" }}</td> <!-- Formatear la fecha -->
+                    <td class="hide-on-large-screen">
+                        <!-- Botón para mostrar detalles en dispositivos móviles -->
+                        <button id="btn-MostrarOcultar{{ gasto.id }}" class="btn-MostrarOcultar" onclick="toggleDetails('{{ gasto.id }}')">Mostrar Detalles</button>
+                        <!-- Detalles de cliente en dispositivos móviles -->
+                        <div id="details_{{ gasto.id }}" class="details-hidden">
+                            <p><strong>Rut:</strong> {{ gasto.proveedor.rut }}</p>
+                            <p><strong>Descripción:</strong> {{ gasto.descripcion }}</p>
+                            <p><strong>Tipo:</strong> {{ gasto.tipo }}</p>
+                            <p><strong>Fecha:</strong> {{ gasto.fecha|date:"Y-m-d H:i" }}</p>
+                        </div>
+                    </td>
+                    <td>
+                        <!-- Agrega un formulario con un botón para enviar la solicitud de eliminación -->
+                        <form action="{% url 'eliminar_gasto' gasto.id %}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este gasto?')">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-eliminar">Eliminar</button>
+                            <input type="hidden" name="gasto_id" value="{{ gasto.id }}">
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -144,6 +163,45 @@
         }
         return true; // Permitir el envío del formulario si todos los campos están llenos
     }
+
+        // Función para mostrar u ocultar los detalles del cliente en dispositivos móviles
+        function toggleDetails(gastoId) {
+        var details = document.getElementById('details_' + gastoId);
+        var btn = document.getElementById('btn-MostrarOcultar' + gastoId);
+
+        if (details.style.display === 'block') {
+            details.style.display = 'none';
+            btn.innerText = 'Mostrar Detalles';
+        } else {
+            details.style.display = 'block';
+            btn.innerText = 'Ocultar Detalles';
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var messageContainer = document.querySelector('.message-container');
+    
+        if (messageContainer) {
+            // Mostrar el mensaje flash
+            messageContainer.style.opacity = '1'; // Inicia con opacidad completa
+    
+            // Gradualmente reduce la opacidad
+            var fadeOutInterval = setInterval(function() {
+                messageContainer.style.opacity -= 0.1; // Reduce la opacidad en 0.1 cada 100ms
+                if (messageContainer.style.opacity <= 0) {
+                    clearInterval(fadeOutInterval); // Detiene la animación cuando la opacidad llega a 0
+                    messageContainer.style.display = 'none'; // Oculta el mensaje cuando la animación ha terminado
+                }
+            }, 150); // Ejecuta la animación cada 100ms
+    
+            // Cambia la duración de la animación según sea necesario
+            var animationDuration = 4000; // Duración total de la animación en milisegundos
+            setTimeout(function() {
+                clearInterval(fadeOutInterval); // Detiene la animación después del tiempo especificado
+                messageContainer.style.display = 'none'; // Oculta el mensaje después de la animación
+            }, animationDuration);
+        }
+    });
 </script>
 </body>
 </html>
